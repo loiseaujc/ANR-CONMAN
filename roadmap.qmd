@@ -1,0 +1,171 @@
+---
+title: "Roadmap"
+bibliography: bibliography.bib
+---
+
+## Work Packages
+
+### Work Package #1 -- Baseline models
+
+The parameterization strategy proposed in this research project applies to a wide range of linear models.
+Our main focus is however on control-oriented data-driven models.
+To assess the performances and robustness of these models, reference data must obtained.
+Running over the first year of the project, this WP deals with the implementation of state-of-the-art linear methods for flow control.
+These developments will mostly happen in `nekStab`, an open-source toolbox for large-scale stability and bifurcation analysis of incompressible flows.
+Relying on the spectral element solver `Nek5000`, this library is being developed by the principal investigator.
+Of interest for this work package are `Nek5000`'s capabilities in solving the direct and adjoint linearized Navier-Stokes equations and the coupling with `nekStab`'s large-scale eigenvalue and singular value solvers.
+
+Consider a multiple-input multiple output linear time-invariant (MIMO LTI) system
+
+$$
+\Sigma
+=
+\begin{pmatrix}
+\begin{array}{c|c}
+\mathbf{A} & \mathbf{B} \\
+\hline
+\mathbf{C}
+\end{array}
+\end{pmatrix}
+$$
+
+with $\mathbf{x} \in \mathbb{R}^n$ being the state vector of the system, $\mathbf{u} \in \mathbb{R}^p$ its inputs, and $\mathbf{y} \in \mathbb{R}^q$ its outputs.
+A feedback control law of the form $\mathbf{u} = - \mathbf{Kx}$ can stabilize the otherwise unstable dynamics.
+For *linear quadratic regulators* (resp. *linear quadratic estimators*), synthesizing $\mathbf{K} \in \mathbb{R}^{n \times p}$ (resp. $\mathbf{L} \in \mathbb{R}^{n \times q}$) requires the solution of an algebraic Ricatti equation.
+Due to the sheer size of the discretizations in fluid dynamics, this is however computationally intractable even for moderately complex flow configurations.
+Two main strategies have been proposed in the literature to overcome these limitations, including *Balanced Proper Orthgonal Decomposition* [@rowley_model_2005], the *Adjoint of the Direct-Adjoint* and *Adjoint of the Adjoint-Direct* [@bewley_methods_2016;@semeraro_full-order_2018].
+The implementation of these strategies, both in sandboxes and in `nekStab`, forms the main tasks of this work package.
+
+#### Task 1.1 -- Adjoint of the direct-adjoint (ADA)
+
+- [ ] **ADA in Julia/Python for prototyping**
+    - [ ] Implement ADA for the Ginzburg-Landau equation.
+    - [ ] Implement classic LQR for the sake of reference.
+    - [ ] Validate/benchmark the two approaches against one another.
+- [ ] **ADA in `nekStab`**
+    - [ ] Implement ADA for the hydrodynamic equations only.
+    - [ ] Validate the implementation based on
+        - [ ] Plane Poiseuille flow
+        - [ ] Shear-driven cavity flow
+        - [ ] Cylinder flow
+
+#### Task 1.2 -- Adjoint of the adjoint-direct (AAD)
+
+- [ ] **AAD in Julia/Python for prototyping**
+    - [ ] Implement AAD for the Ginzburg-Landau equation.
+    - [ ] Implement classic LQE for the sake of reference.
+    - [ ] Validate/benchmark the two approaches against one another.
+- [ ] **AAD in `nekStab`**
+    - [ ] Implement AAD for the hydrodynamic equations only.
+    - [ ] Validate the implementation based on
+        - [ ] Plane Poiseuille flow
+        - [ ] Shear-driven cavity flow
+        - [ ] Cylinder flow
+- [ ] **Combine AAD and ADA for LQG control**
+    - [ ] Validate the combined approach for closed-look feedback control.
+        - [ ] State feedback:
+            - [ ] Plane Poiseuille flow
+        - [ ] Output feedback:
+            - [ ] Shear-driven cavity flow
+            - [ ] Cylinder flow
+
+#### Task 1.3 -- Balanced Proper Orthogonal Decomposition (BPOD)
+
+- [ ] **Implementation of BPOD in `nekStab`**
+    - [ ] Impulse response of the direct system.
+    - [ ] Impulse response of the adjoint system.
+    - [ ] Singular Value Decomposition of the cross Gramian.
+    - [ ] Petrov-Galerkin projection of the linearized operator.
+    - [ ] Output of the reduced-order model in a `Julia` compatible format.
+- [ ] **Validation of the implementation**
+    - [ ] Plane Poiseuille flow
+    - [ ] Shear-driven cavity flow
+    - [ ] Cylinder flow
+
+#### Task 1.4 -- Optimal sensor and actuator placement
+
+- [ ] **Sandbox implementation of the $\mathcal{H}_2$ optimal sensor and actuator placement**
+    - [ ] Ginzburg-Landau sandbox with standard solvers.
+        - [ ] Linearized operator in matrix form.
+        - [ ] Adjoint operator in matrix form.
+        - [ ] Ricatti and Lyapunov direct solvers.
+        - [ ] Generic optimization loop.
+    - [ ] Ginzburg-Laudau sandbox with time-stepper formulation.
+        - [ ] LQR implementation based on ADA.
+        - [ ] LQE implementation based on AAD.
+        - [ ] Generic optimization loop.
+    - [ ] Benchmark the two approaches with a variety of optimizers.
+- [ ] **$\mathcal{H}_2$ optimal sensor/actuator placement in `nekStab`**
+    - [ ] LQR implementation based on ADA.
+    - [ ] LQE implementation based on AAD.
+    - [ ] Optimizer.
+- [ ] **Submodular sensor/actuator placement**
+    - [ ] Implement standard algorithms in `SubmodularOpt.jl`.
+    - [ ] Benchmark submodular sensor placement vs. $\mathcal{H}_2$ optimal vs. Manohar et al. on the Ginzburg-Landau equation.
+    - [ ] Couple `SubmodularOpt.jl` and `nekStab` for sensor/actuator placement of high-dimensional systems.
+
+### Work Package #2 -- Data-driven linear modeling
+
+#### Task 2.1 -- Unifying framework for data-driven linear modeling
+
+- [ ] Literature review on data-driven linear models.
+- [ ] Unification of the most important modeling techniques
+    - [x] POD
+    - [x] DMD, DMDc, ioDMD
+    - [x] ERA, N4SID, MOESP, CVA
+    - [ ] BPOD
+    - [x] Linear Stochastic Estimation
+    - [ ] Extended DMD, Kernel DMD
+
+#### Task 2.2 -- Implementation in `nekStab` + development of an external OSS toolbox
+
+#### Task 2.3 -- Benchmarking data-driven models
+
+- [ ] Identify the most relevent benchmarks from the literature review.
+- [ ] Sandbox implementation of the identified benchmarks.
+- [ ] Exhaustive comparison of the performances of vanilla vs. RRR reformulations
+    - [x] POD
+    - [ ] DMD, KMD
+    - [ ] DMDc, ioDMD
+    - [ ] ERA, N4SID, MOESP, CVA
+    - [ ] Extended DMD, Kernel DMD
+    - [ ] LSE, CCA
+
+#### Task 2.4 -- Data-driven optimal sensors and actuators placement
+
+### Work Package #3 -- Parameterization and interpolation on the Grassman and Stiefel manifolds
+
+#### Task 3.1 -- Parameterization of BPOD on the Grassman manifold
+
+- [ ] Literature review on the different sampling strategies for matrix-valued manifolds.
+- [ ] Parameterization of the BPOD subspaces vs. direct parameterization of the cross gramian matrix.
+- [ ] *a priori* and *a posteriori* error estimates for the $\mathcal{H}_2$ norm of the interpolated model.
+- [ ] Benchmark the performances of the interpolated models against their ground truth counterparts
+    - [ ] Sandbox implementation on the Ginzburg-Landau equation.
+    - [ ] Using `nekStab`:
+        - [ ] Plane Poiseuille flow
+        - [ ] Cylinder flow
+        - [ ] Shear-driven cavity flow
+
+#### Task 3.2 -- Parameterization of ADA and AAD on the Stiefel manifold
+
+#### Task 3.3 -- Parameterization of data-driven models on the Stiefel manifold
+
+### Work Package #4 -- Sensitivity, uncertainty quantification, and applications
+
+#### Task 4.1 -- Sensitivity of data-driven models to varying parameters
+
+#### Task 4.2 -- Uncertainty quantification on the Stiefel manifold
+
+#### Task 4.3 -- Application to a fully three-dimensional flow configuration
+
+## Deliverables
+
+- [x] D0.1 Progress report (01/2023 - 06/2023)
+- [ ] D0.2 Progress report (07/2023 - 12/2023)
+- [ ] D0.3 Progress report (01/2024 - 06/2024)
+- [ ] D0.4 Progress report (07/2024 - 12/2024)
+- [ ] D0.5 Progress report (01/2025 - 06/2025)
+- [ ] D0.6 Progress report (07/2025 - 12/2025)
+- [ ] D0.7 Progress report (01/2026 - 06/2026)
+- [ ] D0.8 Final report

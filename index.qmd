@@ -1,0 +1,26 @@
+---
+title: "**CONMAN**: Data-driven **CON**trol and **MAN**ifold Interpolation"
+---
+
+## The Project
+
+## Team members
+
+The project **CONMAN** is funded by [Agence Nationale pour la Recherche (ANR)](https://anr.fr/en/anrs-role-in-research/about-us/missions/) through the grant ANR-22-CE46-0008.
+It started in January 2023 and will last for four years (until the end of December 2026).
+All participants are members of [DynFluid](https://dynfluid.ensam.eu/), a fluid dynamics laboratory specialized in numerical simulations and hosted by [Arts & Métiers Institute of Technology](https://artsetmetiers.fr/en) in Paris, France.
+It includes:
+
+- [**Jean-Christophe Loiseau**](https://loiseaujc.github.io/), *Maître de Conférences* : Principal Investigator of this project, his research is divided between developing numerical techniques to study the linear stability properties of high-dimensional systems such as the ones resulting from the discretization of partial differential equations, as well as the development of data-driven techniques for the modelisation and control of such systems with a particular emphasis on data-efficient algorithms, an issue of utmost importance in numerous mechanical engineering applications.
+- [**Jean-Christophe Robinet**](https://scholar.google.fr/citations?user=xlpB1PIAAAAJ&hl=fr), *Professeur des Universités* : Currently the head of the [DynFluid](https://dynfluid.ensam.eu/) laboratory, J.-Ch. Robinet has devoted his scientific career to the study of hydrodynamic instabilities both the compressible in incompressible regimes. His most recent research, in collaboration with [Nicolas Alferez](https://www.cnam.fr/portail/nicolas-alferez--1019209.kjsp), focuses on the use of automatic differentiation techniques for the development of a general-purpose PDE solver capable of bringing insights into the stability properties of fully three-dimensional flows in the presence of shock waves. His role in the **CONMAN** project is mostly that of *Scientific Advisor*.
+- [**Xavier Merle**](https://www.researchgate.net/profile/Xavier-Merle), *Maître de Conférences* : As for J.-Ch. Loiseau, X. Merle conducted his Ph. D. work under the supervision of J.-Ch. Robinet on hydrodynamic instabilities. Since 2010, his research interests are mostly toward the development of uncertainty quantification techniques for CFD solvers with a particular emphasis toward industrial turbulence models. His contributions to the **CONMAN** project are essentially oriented towards the development of such UQ techniques for data-driven reduced-order models.
+
+In addition to these three faculty members, the project **CONMAN** also supports one postdoctoral researcher and one Ph. D. candidate:
+
+- [**Simon Kern**](https://www.researchgate.net/profile/Simon-Kern-7), *Postdoctoral Researcher* : After completing a M. Sc. in Mechanical Engineering from the Royal Institute of Technology of Stockholm (KTH, Sweden), Simon stayed at KTH for his Ph. D. thesis. There, he worked with Dan Henningson and Ardeshir Hanifi on Optimal Time Dependent (OTD) modes of the linearized Navier-Stokes operator.
+He defended his thesis in June 2023 and joined the members of the project **CONMAN** in September 2023.
+- [**TBA**](), *Ph. D. Candidate* : TBA
+
+All members of the project are actively supporting the *free and open-source software* initiative, as well as *Open and Reproducible Science*.
+As such, all the codes written during this project and needed to reproduce the data used is available on [GitHub](https://github.com/) as well as on [Zenodo](https://zenodo.org/) and [recherche.data.gouv.fr](https://recherche.data.gouv.fr/fr) for long-term guarantees.
+All journal articles, technical reports, or conference presentations are directly available from [this]() webpage and are hosted using [arXiv]() and [figshare]().

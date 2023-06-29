@@ -1,0 +1,550 @@
+---
+title: "Progress Report n°1"
+author: "Jean-Christophe Loiseau"
+date: "June 2023"
+image: "../imgs/progress_bar.png"
+number-sections: true
+bibliography: bibliography.bib
+license: "CC BY"
+---
+
+This is the first progress report for the ANR JCJC project **CONMAN**, covering the period from January 1st, 2023 to June 30th, 2023.
+
+## Identification
+
+| | |
+|---|---|
+| **Project acronym** | **CONMAN** |
+| **Project title** | Data-driven Control and Manifold Interpolation |
+| **Funding program** | Programme Jeunes Chercheuses Jeunes Chercheurs |
+| **Agreement number** | ANR-22-CE46-0008 |
+| **Principal Investigator** | [Jean-Christophe Loiseau](mailto:jean-christophe.loiseau@ensam.eu) |
+| **Starting date** | 01/01/2023 |
+| **Duration** | 48 months |
+
+| | |
+|---|---|
+| **Author of report** | [Jean-Christophe Loiseau](mailto:jean-christophe.loiseau@ensam.eu) |
+| **Date** | June 2023 |
+| **Period covered** | 01/01/2023 - 30/06/2023 |
+
+## Progress Report
+
+Applications of closed-loop flow control have epic proportions: drag reduction, lift increase, mixing enhancement, or noise mitigation.
+It is however challenged by strong nonlinearities, partial state information, parametric dependencies, or time delays.
+By focusing on linear time-invariant (LTI) dynamical systems of the form
+
+$$
+\begin{aligned}
+\dfrac{d\mathbf{x}}{dt} & = \mathbf{Ax} + \mathbf{Bu} \\
+\mathbf{y} & = \mathbf{Cx} + \mathbf{Du},
+\end{aligned}
+$$
+
+the present project aims at tackling some of these problems, most notably the parametric dependencies for reduced-order models.
+Likewise, optimal actuator and sensor placement (i.e. design of $\mathbf{B}$ and $\mathbf{C}$, respectively) still is an unsolved combinatorial optimization problem whose solution impacts all downstream tasks and applications.
+
+To tackle these issues, the **CONMAN** project follows two parallel, albeit complementary routes :
+
+1. The development of a unified framework for data-driven linear modeling of parameterized systems based on the joint use of classical low-rank approximation techniques for dimensionality reduction purposes combined with high-order interpolation on matrix manifolds to capture the parametric dependencies.
+2. The formulation of a combinatorial optimization problem for actuators and sensors placement and its subsequent relaxation into a tractable form. Particular attention is being paid to highly efficient yet relevent (from an experimental point of view) algorithms with certains optimality guarantees.
+
+In agreement with the recommendations put forth by Prof. [Lorena Barba](https://lorenabarba.com/) (George Washington University, USA) during her recent invited lecture [*Anti Patterns of Scientific Machine Learning to Fool the Masses*](https://figshare.com/articles/presentation/Anti_Patterns_of_Scientific_Machine_Learning_to_Fool_the_Masses_A_Call_for_Open_Science/23579808/1) at the [Platform for Advanced Scientific Computing Conference](https://pasc23.pasc-conference.org/) (PASC23), extra care is taken in choosing the baseline models against which the rest of the techniques developped during the project will be compared in order to ensure fair and meaningful benchmarks.
+As a consequence, the first six months of this project have been dedicated to a thorough literature review as well as implementing some of the building blocks needed for the baseline reference models.
+
+::: {.callout-warning appearance="simple"}
+
+## Hiring process for the Postdoctoral Research
+
+At the time of acceptance by ANR, plan was to hire a postdoctoral researcher in the first quarter of 2023.
+Unfortunately, no candidate was found before May 2023. The successful hiree, Simon Kern, has defended his Ph. D. work at KTH early June 2023 and will join **DynFluid** at the begining of the Fall semester.
+These human ressources issues forced us to postpone some tasks in *Work Package #1* by a few months.
+This should not impact however the overall calendar of the project.
+:::
+
+This is the first technical report (D0.1) of the **CONMAN** project.
+It is organized as follows: @sec-baseline provides a thorough presentation of the baseline techniques, namely *Balanced Proper Orthogonal Decomposition* for reduced-order modeling and the *POD-QR* method for near-optimal actuators/sensors selection.
+@sec-numerics describes the theoretical tools already available to the project members or under active development, along with their numerical implementations.
+Then, @sec-flowconf introduces the canonical flow configurations used throughout the project for benchmark purposes.
+These canonical flow configurations also serve as pedagogical examples to emphasizes some of the challenges tackled in this project and problems posed by the inconsiderate used of advanced machine learning techniques.
+Finally, @sec-conclusion discusses some of the problems faced by members of the project as well as presenting some of the actions taken for the scientific communication and dissemination while @sec-next teases some of the scientific advances to be expected for the next technical report (D0.2, due Dec. 2023).
+
+### Baseline models{#sec-baseline}
+
+#### Reduced-order modeling
+
+Direct design of controllers and estimators for high-dimensional dynamical systems resulting from the discretization of partial differential equations such as the Navier-Stokes equations is often faced with the *curse of dimensionality*.
+Model order reduction is thus a necessary step before control synthesis.
+Numerous techniques have been proposed in the literature.
+In this project, we restrict our attention to *Balanced Truncation* (see @sec-bt) and its computationally efficient (albeit equivalent) alternative *Balanced Proper Orthogonal Decomposition* (see @sec-bpod).
+
+##### Balanced Truncation {#sec-bt}
+
+Given a multiple input multiple output (MIMO) linear time-invariant (LTI) dynamical system
+
+$$
+\begin{aligned}
+    \dfrac{d\mathbf{x}}{dt} & = \mathbf{Ax} + \mathbf{Bu} \\
+    \mathbf{y} & = \mathbf{Cx} + \mathbf{Du}
+\end{aligned}
+$$
+
+where $\mathbf{x} \in \mathbb{R}^n$ is the state vector of the system, @moore_principal_1981 proposed the *Balanced Truncation* (BT) procedure.
+Starting from the *observability* gramian $\mathbf{W}_o$ and *controllability* gramian $\mathbf{W}_c$ solution to the Lyapunov equations
+
+$$
+\mathbf{A}^* \mathbf{W}_o + \mathbf{W}_o \mathbf{A} = - \mathbf{C}^* \mathbf{C} \quad \text{and} \quad \mathbf{A} \mathbf{W}_c + \mathbf{W}_c \mathbf{A}^* = - \mathbf{BB}^*,
+$$
+
+Balanced Truncation first applies a *balancing transformation*, i.e. finding an invertible linear transformation $\hat{\mathbf{x}} = \mathbf{T} \mathbf{x}$ such that
+
+$$
+\mathbf{T} \mathbf{W}_c \mathbf{T}^{*} = \mathbf{T}^{-*} \mathbf{W}_o \mathbf{T}^{-1} = \boldsymbol{\Sigma}
+$$
+
+where $\boldsymbol{\Sigma} \in \mathbb{R}^{n \times n}$ is a diagonal matrix formed from the *Hankel Singular Values* of the system.
+The system in the original coordinates
+
+$$
+\begin{pmatrix}
+    \begin{array}{c|c}
+    \mathbf{A} & \mathbf{B} \\
+    \hline
+    \mathbf{C} & \mathbf{0}
+    \end{array}
+\end{pmatrix}
+$$
+
+gets transformed to
+
+$$
+\begin{pmatrix}
+    \begin{array}{c|c}
+    \mathbf{TAT}^{-1} & \mathbf{TB} \\
+    \hline
+    \mathbf{CT}^{-1} & \mathbf{0}
+    \end{array}
+\end{pmatrix}
+$$
+
+in the balancing coordinate system.
+Although in this new reference frame the observability and controllability gramians are now diagonal and equal, the system remains $n$-dimensional.
+Assuming the balancing transformation $\mathbf{T}$ has been computed such that the Hankel singular values in $\boldsymbol{\Sigma}$ are sorted in decreasing order, @moore_principal_1981 proposed to simply truncate this transformation by considering only the most jointly controllable and observable directions.
+Denoting by $\boldsymbol{\Psi}_r$ and $\boldsymbol{\Phi}_r^*$ the $r$ leading columns of $\mathbf{T}^{-1}$ and rows of $\mathbf{T}$, respectively, we arrive at the *balanced truncation model*
+
+$$
+\begin{aligned}
+    \dfrac{d \hat{\mathbf{x}}}{dt} & = \boldsymbol{\Phi}_r^* \mathbf{A} \boldsymbol{\Psi}_r \hat{\mathbf{x}} + \boldsymbol{\Phi}_r^* \mathbf{Bu} \\
+    \mathbf{y} & \simeq \mathbf{C} \boldsymbol{\Psi}_r \hat{\mathbf{x}}.
+\end{aligned}
+$$
+
+with the original state vector being recovered from $\mathbf{x} \simeq \boldsymbol{\Psi}_r \hat{\mathbf{x}}$.
+Although balanced truncation is not optimal in any norm, the $\mathcal{H}_{\infty}$ norm of the error resulting from balanced truncation is upper bounded by twice the sum of the neglected Hankel singular values.
+Upper bounds using different norms (e.g. $\mathcal{H}_2$ norm) and their mathematical proofs can be found in the text book by @antoulas_approximation_2005 [see chap. 7].
+
+Despite its desirable mathematical properties, balanced truncation suffers from a crucial limitation: its computational cost.
+It requires having access to both the observability and controllability gramians of the system.
+These are $n \times n$ symmetric positive definite solutions to Lyapunov equations, requiring $\mathcal{O}(n^6)$ operations to compute with standard algorithms.
+Balanced truncation thus becomes rapidly computationally intractable as the dimension of the system increases.
+This observation motivated @rowley_model_2005 to develop the *Balanced Proper Orthogonal Decomposition* (BPOD), a reformulation of balanced truncation computable solely from simulation data.
+
+##### Balanced Proper Orthogonal Decomposition {#sec-bpod}
+
+*Balanced Proper Orthogonal Decomposition* (BPOD) was proposed by Clarence Rowley from Princepton University (USA) in his seminal paper [@rowley_model_2005] as a computable alternative to balanced truncation for large-scale LTI systems.
+While the controllability and observability gramians are solutions to Lyapunov equations, they can also be defined as
+
+$$
+\mathbf{W}_c = \int_{0}^{\infty} \exp \left( \tau \mathbf{A} \right) \mathbf{BB}^T \exp \left( \tau \mathbf{A}^T \right) \ \mathrm{d} \tau
+$$
+
+and
+
+$$
+\mathbf{W}_o = \int_{0}^{\infty} \exp \left( \tau \mathbf{A}^T \right) \mathbf{C}^T \mathbf{C} \exp \left( \tau \mathbf{A} \right) \ \mathrm{d} \tau,
+$$
+
+respectively.
+
+**Empirical controllability gramian --** Provided the matrix $\mathbf{A}$ is Hurwitz, the controllability gramian $\mathbf{W}_c$ can be approximated to an arbitrary tolerance using a simple quadrature scheme.
+For a system with $p$ inputs, let the input-to-state matrix be
+
+$$
+\mathbf{B} = \begin{bmatrix} \mathbf{b}_1 & \mathbf{b}_2 & \cdots & \mathbf{b}_p \end{bmatrix} \in \mathbb{R}^{n \times p}.
+$$
+
+The state responses to unit impulses are given by
+
+$$
+\begin{aligned}
+    \mathbf{x}_1(t) & = \exp \left( t \mathbf{A} \right) \mathbf{b}_1 \quad \text{Response to impulsive input } u_1(t) = \delta(t) \\
+    \mathbf{x}_2(t) & = \exp \left( t \mathbf{A} \right) \mathbf{b}_2 \quad \text{Response to impulsive input } u_2(t) = \delta(t) \\
+    \vdots \\
+    \mathbf{x}_p(t) & = \exp \left( t \mathbf{A} \right) \mathbf{b}_p \quad \text{Response to impulsive input } u_p(t) = \delta(t).
+\end{aligned}
+$$
+
+The controllability gramian $\mathbf{W}_c$ can be expressed as
+
+$$
+\mathbf{W}_c = \int_{0}^{\infty} \left( \mathbf{x}_1(\tau) \mathbf{x}_1^T(\tau) + \mathbf{x}_2(\tau) \mathbf{x}_2^T(\tau) + \cdots + \mathbf{x}_p(\tau) \mathbf{x}_p^T(\tau) \right) \ \mathrm{d} \tau.
+$$
+
+If the impulse responses are given at discrete times $t_1, t_2, \cdots, t_m$, as is typical in numerical simulations, this integral can be approximated with a simple quadrature sum.
+Denoting the data matrix formed from the impulse responses as
+
+$$
+\mathbf{X} = \begin{bmatrix} \mathbf{x}_1(t_1) \sqrt{w_1} & \cdots & \mathbf{x}_1(t_m) \sqrt{w_m} & \cdots & \mathbf{x}_p(t_1)\sqrt{w_1} & \cdots & \mathbf{x}_p(t_m) \sqrt{w_m} \end{bmatrix},
+$$
+
+where $w_i$ are quadrature coefficients, the *empirical controllability gramian* $\hat{\mathbf{W}_c}$ is computed as
+
+$$
+\hat{\mathbf{W}_c} = \mathbf{XX}^T.
+$$
+
+If $\mathbf{A}$ is Hurwitz, this empirical approximation converges to the true controllability gramian as $t_m$ tends to infinity.
+For dissipative systems, the data matrix $\mathbf{X}$ often tends to be low-rank, a property leveraged later on in the BPOD algorithm.
+
+**Empirical observability gramian --** For LTI systems, observability is the *dual* of controllability.
+Hence, similar techniques can be employed to approximate the observability gramian $\mathbf{W}_o$.
+Let the measurement matrix $\mathbf{C}$ be
+
+$$
+\mathbf{C} = \begin{bmatrix} \mathbf{c}_1^T \\ \mathbf{c}_2^T \\ \vdots \\ \mathbf{c}_q^T \end{bmatrix}.
+$$
+
+The impulse responses of the *adjoint system*
+
+$$
+\dfrac{d\mathbf{z}}{dt} = \mathbf{A}^T \mathbf{z} + \mathbf{C}^T \mathbf{v}
+$$
+
+are defined as
+
+$$
+\begin{aligned}
+    \mathbf{z}_1(t) & = \exp \left( t \mathbf{A}^T \right) \mathbf{c}_1 \quad \text{Response to impulsive input } v_1(t) = \delta(t) \\
+    \mathbf{z}_2(t) & = \exp \left( t \mathbf{A}^T \right) \mathbf{c}_2 \quad \text{Response to impulsive input } v_2(t) = \delta(t) \\
+    \vdots \\
+    \mathbf{z}_q(t) & = \exp \left( t \mathbf{A}^T \right) \mathbf{c}_q \quad \text{Response to impulsive input } v_q(t) = \delta(t).
+\end{aligned}
+$$
+
+The observability gramian $\mathbf{W}_o$ can be expressed as
+
+$$
+\mathbf{W}_o = \int_{0}^{\infty} \left( \mathbf{z}_1(t) \mathbf{z}_1^T(t) + \mathbf{z}_2(t)\mathbf{z}_2^T(t) + \cdots + \mathbf{z}_q(t) \mathbf{z}_q^T(t) \right) \ \mathrm{d}t.
+$$
+
+Denoting the data matrix formed from the adjoint impulse responses as
+
+$$
+\mathbf{Y} = \begin{bmatrix} \mathbf{z}_1(t_1) \sqrt{w_1} & \cdots & \mathbf{z}_1(t_m) \sqrt{w_m} & \cdots & \mathbf{z}_q(t_1)\sqrt{w_1} & \cdots & \mathbf{z}_q(t_m) \sqrt{w_m} \end{bmatrix},
+$$
+
+the *empirical observability gramian* $\hat{\mathbf{W}_o}$ is computed as
+
+$$
+\hat{\mathbf{W}_o} = \mathbf{YY}^T.
+$$
+
+Once again, if $\mathbf{A}$ is Hurwitz, this empirical approximation converges to the true observability gramian as $t_m$ tends to infinity.
+Likewise, for dissipative systems, the data matrix $\mathbf{Y}$ often tends to be low-rank.
+
+**The BPOD procedure --** Given the data matrices $\mathbf{X}$ and $\mathbf{Y}$, BPOD computes a convergent approximation of balanced truncation in two steps.
+First, the singular value decomposition of the inner-product matrix $\mathbf{Y}^T \mathbf{X}$ is computed, leading to
+
+$$
+\mathbf{Y}^T \mathbf{X}
+=
+\begin{bmatrix}
+\mathbf{U}_1 & \mathbf{U}_2
+\end{bmatrix}
+\begin{bmatrix}
+\boldsymbol{\Sigma}_1 & 0 \\ 0 & \boldsymbol{\Sigma}_2
+\end{bmatrix}
+\begin{bmatrix} \mathbf{V}_1^T \\ \mathbf{V}_2^T \end{bmatrix}.
+$$
+
+The balancing modes are then computed as
+
+$$
+\boldsymbol{\Psi} = \mathbf{XV}_1 \boldsymbol{\Sigma}_1^{-\frac12} \quad \text{and} \quad \boldsymbol{\Phi} = \boldsymbol{\Sigma}^{-\frac12} \mathbf{U}_1^T \mathbf{Y}^T.
+$$
+
+A proposition proved by @rowley_model_2005 establishes that if $r = n$ (i.e. the gramians are full rank), the matrix $\boldsymbol{\Sigma}$ contains the Hankel singular values of the systems, while $\boldsymbol{\Psi}$ determines the balancing transformation.
+Otherwise, $\boldsymbol{\Phi}$ and $\boldsymbol{\Psi}$ approximate the matrices obtained from balanced truncation.
+
+Although BPOD formally converges to balanced truncation only in the limit $t_m \to \infty$, a wealth of empirical evidence in the literature highlights that the error incurred by BPOD benefits from the same upper bounds as the error resulting from balanced truncation.
+The BPOD reduced order model
+
+$$
+\begin{aligned}
+\dfrac{d \mathbf{x}_r}{dt} & = \mathbf{A}_r \mathbf{x}_r + \mathbf{B}_r \mathbf{u} \\
+\mathbf{y}_r & = \mathbf{C}_r \mathbf{x}_r + \mathbf{Du}
+\end{aligned}
+$$
+
+is constructed in an analogous fashion as the one resulting from balanced truncation.
+One major limitation of BPOD is however the need for the adjoint system.
+Yet, the solid mathematical grounds of balanced truncation combined with the computational efficiency of BPOD makes this procedure an excellent baseline model against which to benchmark the performances of data-driven models developed subsequently in the **CONMAN** project.
+
+::: {.callout-note appearance="simple"}
+
+## Implementation of BPOD on the `nekStab` library
+
+Balanced Proper Orthogonal Decomposition is currently being implemented in the development branch of our open-source library `nekStab`.
+Being based on the high-performance CFD solver `Nek5000`, the BPOD implementation in `nekStab` will enable us to apply this procedure to design reduced-order models of a wide variety of flow configurations including fully three-dimensional flows, a feast never achieved (to the best of our knowledge) in the fluid dynamics literature.
+
+:::
+
+#### Sensor and actuator placement
+
+Although reduced-order modeling is a key enabler for analysis and feedback control, actuators and sensors placement (i.e. designing $\mathbf{B}$ and $\mathbf{C}$) is an upstream task having important downstream consequences.
+Consider the situation where $m$ possible sensors are available albeit we only have the budget for $p$ of them.
+There are
+
+$$
+\binom{m}{p} = \dfrac{m!}{\left(m-p \right)! \times p!}
+$$
+
+combinations to choose from.
+No matter the performance index considered, sensors selection thus fundamentally is a rapidly intractable combinatorial optimization problem.
+
+Many techniques have been proposed to approximately solve this problem greedily as an alternative to the combinatorial approach.
+These include *Gappy POD* [@willcox_unsteady_2006], the *Discrete Empirical Interpolation Method* [@drmac_new_2016] or through *pivoted QR decomposition of the POD matrix* [@manohar_data-driven_2018].
+All these techniques are however primarily targetting the state *reconstruction* problem.
+Given a matrix of possible measurements $\mathbf{C}$ such that
+
+$$
+\mathbf{y} \simeq \mathbf{SCx},
+$$
+
+these techniques aim at optimizing the selection matrix $\mathbf{S} \in \mathbb{R}^{p \times n}$ such that the state vector $\mathbf{x}$ is best estimated from the sensor measurements $\mathbf{y}$ in the least-squares sense.
+Although of practical interest for linear inverse problems, these techniques cannot be directly applied to select sensors or actuators for an LTI dynamical system.
+For systems with actuation, it is necessary to consider simultaneously the placement of sensors and actuators since the most observable and controllable subspaces might be quite different.
+Current state-of-the-art techniques include @chen_h2_2011, @burns_optimal_2021, or @manohar_optimal_2022 for instance.
+Although we only present the ideas put forth by @manohar_optimal_2022 in this technical report for the sake of conciseness, all three of the aforementionned techniques will be considered as possible baseline reference in the rest of the **CONMAN** project.
+
+**Reminder about LTI systems --** Given a linear time-invariant dynamical system
+
+$$
+\begin{aligned}
+\dfrac{d\mathbf{x}}{dt} & = \mathbf{Ax} + \mathbf{Bu} \\
+\mathbf{y} & = \mathbf{Cx}.
+\end{aligned}
+$$
+
+Its observability gramian $\mathbf{W}_o$ and controllability gramian $\mathbf{W}_c$ are defined as
+
+$$
+\mathbf{W}_o = \int_{0}^{\infty} \exp \left( t \mathbf{A}^T \right) \mathbf{C}^T \mathbf{C} \exp \left( t \mathbf{A} \right) \ \mathrm{d}t
+$$
+
+and
+
+$$
+\mathbf{W}_c = \int_{0}^{\infty} \exp \left( t \mathbf{A} \right) \mathbf{BB}^T \exp \left( t \mathbf{A}^T \right) \ \mathrm{d}t.
+$$
+
+Because they depend explicitly on $\mathbf{B}$ and $\mathbf{C}$, the gramians are often used to evaluate the observability/controllability of a given sensor and actuator placement.
+One standard performance index is the $\mathcal{H}_2$ norm of the system, measuring the average output gain over all frequencies of the input.
+Given the transfer function $\mathbf{G}(s) = \mathbf{C} \left( s \mathbf{I} - \mathbf{A} \right)^{-1} \mathbf{B}$, the $\mathcal{H}_2$ norm of the system is defined as
+
+$$
+\| \mathbf{G} \|_{\mathcal{H}_2}^2 = \dfrac{1}{4\pi^2} \int_{0}^{\infty} \mathrm{trace} \left( \mathbf{G}^H(i\omega) \mathbf{G}(i\omega) \right) \ \mathrm{d}\omega.
+$$
+
+By the Plancherel theorem, it can also be defined in the time-domain using the impulse response $y_{ij}(t) = \mathbf{C}_i \mathrm{e}^{t\mathbf{A}} \mathbf{B}_j$ as
+
+$$
+\begin{aligned}
+\| \mathbf{G} \|_{\mathcal{H}_2}^2 & = \int_{0}^{\infty} \mathrm{trace} \left( \mathbf{C} \mathrm{e}^{t \mathbf{A}} \mathbf{BB}^T \mathrm{e}^{t \mathbf{A}^T} \mathbf{C}^T \right) \ \mathrm{d}t = \mathrm{trace} \left( \mathbf{C} \mathbf{W}_c \mathbf{C}^T \right) \\
+& = \int_{0}^{\infty} \mathrm{trace} \left( \mathbf{B}^T \mathrm{e}^{t \mathbf{A}^T} \mathbf{C}^T \mathbf{C} \mathrm{e}^{t\mathbf{A}} \mathbf{B} \right) \ \mathrm{d}t = \mathrm{trace} \left( \mathbf{B}^T \mathbf{W}_o \mathbf{B} \right).
+\end{aligned}
+$$
+
+The $\mathcal{H}_2$ norm of a system thus relates explicitly the measurement matrix $\mathbf{C}$ and input-to-state matrix $\mathbf{B}$ to each of its gramians.
+An alternative to the average output energy metric are the volumetric measures given by
+
+$$
+\log\det \mathbf{C} \mathbf{W}_c \mathbf{C}^T \quad \text{and} \quad \log\det \mathbf{B}^T \mathbf{W}_o \mathbf{B},
+$$
+
+corresponding to the geoemtric mean of the axes of the ellipsoid skewed by $\mathbf{B}$ or $\mathbf{C}$.
+In comparison, the trace used to defined the $\mathcal{H}_2$ norm corresponds to the arithmetic mean.
+
+**Optimal sensor and actuator selection using balanced model reduction --** As baseline model, we consider the framework put forth by @manohar_optimal_2022, combining balanced truncation and greedy maximization of the $\log\det$ objective function corresponding to a D-optimal design strategy.
+Given the full-order LTI system
+
+$$
+\begin{aligned}
+\dfrac{d \mathbf{x}}{dt} & = \mathbf{Ax} + \mathbf{Bu} \\
+\mathbf{y} & = \mathbf{Cx}
+\end{aligned}
+$$
+
+with $\mathbf{x} \in \mathbb{R}^n$ the (high-dimensional) state vector, they first compute the (truncated) balancing transformation $\boldsymbol{\Psi}_r$ and $\boldsymbol{\Phi}_r$ (either using the standard balanced truncation algorithm or BPOD).
+This step corresponds to a model order reduction assuming the system is fully actuated and sensed.
+
+In a second step, @manohar_optimal_2022 proposed a greedy approach such that the $\mathcal{H}_2$ norm of the model gracefully degrades as we reduce the number of sensors and/or actuators.
+Denoting by $\mathbb{S}_{C}$ the sensor selection operator, they define it as being the solution to the following optimization problem
+
+$$
+\max_{\mathbb{S}_{C}} \quad \log\det \mathbb{S}_{C} \mathbf{C} \mathbf{W}_c \mathbf{C}^* \mathbb{S}_{C}^*
+$$
+
+Note that low-rank approximations of the gramians of the original system can be obtained as
+
+$$
+\mathbf{W}_c \simeq \boldsymbol{\Psi}_r \boldsymbol{\Sigma}_r \boldsymbol{\Psi}_r^* \quad \text{and} \quad \mathbf{W}_o \simeq \boldsymbol{\Phi}_r \boldsymbol{\Sigma}_r \boldsymbol{\Phi}_r^*.
+$$
+
+Introducing this ansatz into the optimization problem leads to
+
+$$
+\max_{\mathbb{S}_C} \quad \vert \det \left( \mathbb{S}_C \mathbf{C} \boldsymbol{\Psi}_r \right) \vert.
+$$
+
+A similar problem can be formulated for the actuator selection operator $\mathbb{S}_B$.
+This problem remains a combinatorial problem.
+In order to approximately solve it, @manohar_optimal_2022 rely on their prior works [@manohar_data-driven_2018] and suggest to greedily construct $\mathbb{S}_C$ by applying the pivoted QR decomposition to the matrix $\left( \mathbf{C} \boldsymbol{\Psi}_r \right) ^*$.
+Their approach has been shown to scale favourably as the dimension $n$ of the full order system increases, while its performances are comparable to direct optimization of the $\mathcal{H}_2$ norm of the system [@chen_h2_2011].
+Finally, while the authors considered mostly open-loop sensor and actuator placements, they have also illustrated how to extend their methodology to selection sensors and actuators for closed-loop systems.
+
+::: {.callout-note appearance="simple"}
+
+## Implementation details
+
+To the best of our knowledge, the code base developped by @manohar_optimal_2022 is not available.
+Note however that the algorithm is incredibly simple as it relies on the pivoted QR decomposition.
+This matrix factorization is readily available in most scientific programming languages, including `MATLAB`, `SciPy`, `SciLab`, or `Octave` for instance.
+In the rest of this project, this baseline model will be re-implemented using the `Julia` programming language.
+
+:::
+
+### Theoretical framework and numerical tools {#sec-numerics}
+
+#### The fundamental equation of component analysis {#sec-numerics-cca}
+
+::: {.callout-note appearance="simple"}
+
+## Implementation in the `nekStab` library
+
+
+:::
+
+#### Submodular set function maximization
+
+
+::: {.callout-note appearance="simple"}
+
+## The Julia package `SubmodularOpt.jl`
+
+
+:::
+
+### Canonical flow configurations{#sec-flowconf}
+
+#### The two-dimensional Bénard-von Kàrmàn vortex street
+
+#### The two-dimensional shear-driven cavity flow
+
+### Problems encountered and actions taken for scientific communication and dissemination{#sec-conclusion}
+
+#### Human ressources
+
+**Postdocotral researcher --** Recruitment of the postdoctoral researcher was initially planned for the first quarter of 2023.
+Unfortunately, despite the numerous applications, no applicant had the sufficient background in numerical simulation, reduced-order modeling or linear dynamical system theory to ensure rapid progress of the project.
+Decision has been made to postpone this recruitment to Fall 2023.
+Doing so gave the opportunity to Simon Kern to join the project.
+Simon defended his Ph. D. work entitled *Linear and non-linear dynamics of non-autonomous flows* at the Royal Institute of Technology (KTH, Sweden) early June 2023 under the joint supervision of Ardeshir Hanifi and Dan Henningson.
+He will join us in September.
+
+#### Scientific communication and dissemination
+
+This section summarizes some of the actions taken for scientific communication and dissemination of the results related (work package WP5).
+So far, these actions are quite limited.
+This results from the delay in the recruitment of the postdoctoral researcher (initially expected to start during the first quarter of 2023 but effectively starting early september) and the fact the project itself only started a few months ago.
+
+##### Journal Articles
+
+Although the project officially started only early January 2023, three papers are already in preparation.
+A brief overview of each is given below.
+
+**Unifying framework for data-driven linear modeling with rank constraints**
+
+|   |   |
+|:--|---|
+| **Authors** | [J.-Ch. Loiseau](loiseaujc.github.io) (Arts et Métiers, France) & [S. L. Brunton](https://www.eigensteve.com/) (UW, USA) |
+| **Tentative journal** | [*SIAM Journal on Applied Dynamical Systems*](https://www.siam.org/publications/journals/siam-journal-on-applied-dynamical-systems-siads) |
+| **Expected submission date** | Fall 2023 |
+
+As discussed in @sec-numerics-cca, many data-driven linear modeling frameworks for high-dimensional systems can be recast as the following *reduced-rank regression* problem
+
+$$
+\begin{aligned}
+    \min & \quad \dfrac12 \| \mathbf{M}^\frac12 \left( \mathbf{Y} - \mathbf{PQ}^T \mathbf{X} \right) \mathbf{W}^{\frac12} \|_F^2 \\
+    \mathrm{subject~to} & \quad \mathrm{rank}(\mathbf{P}) = r.
+\end{aligned}
+$$
+
+This includes *Proper Orthogonal Decomposition* [@berkooz_proper_1993] for which $\mathbf{X} = \mathbf{Y}$ and $\mathbf{M} = \mathbf{W} =  \mathbf{I}$, *Dynamic Mode Decomposition* [@schmid_dynamic_2022]  where $\mathbf{y}_t = \mathbf{x}_{t+1}$, or *Linear Stochastic Estimation* to name only the most popular in the fluid dynamics community.
+Likewise, numerous linear system identification techniques used in the control community can be derived from this rank-constrained optimization problem, e.g. *EigenRealization Algorithm* [@juang_eigensystem_1985], *N4SID* [@van_overschee_n4sid_1993] or *Canonical Variate Analysis* [@larimore_system_1983].
+
+This article delves into this *fundamental equation of component analysis*, its derivation and the proof of its solution, and illustrates how classical techniques in mechanical engineering and control systems can be derived from it as special cases.
+In the process, we show how the performances and robustness of DMD-like techniques can be improved by correctly formulating these problems into this framework.
+Moreover, as a consequence of these techniques being special instances of a more general problem, we can also draw parallels and connections between them.
+In particular, we elucidate the connection between the modes resulting from *Proper Orthogonal Decomposition* and those from *Dynamic Mode Decomposition*, a long standing and unsatisfactrily answered question in the fluid dynamics literature.
+
+**`SubmodularOpt.jl` : a Julia package for greedy maximization of submodular set functions**
+
+|   |   |
+|:--|:--|
+| **Author** | [J.-Ch. Loiseau](loiseaujc.github.io) (Arts et Métiers, France) |
+| **Tentative journal** | [*Journal of Open Source Softwares*](https://joss.theoj.org/) |
+| **Expected submission date** | Fall 2023 |
+
+`SubmodularOpt.jl` is one of the main packages of this project.
+It is being openly developped using [GitHub](github.com).
+This journal article, to be submitted to the [Journal of Open Source Softwares](https://joss.theoj.org/), presents its core components as well as an example of sensor placement problem it can solve.
+Following the FAIR principles (Free, Accessible, Inclusive, Reproducible) for open and reproducible science, the corresponding release of `SubmodularOpt.jl` will be archived for long-term preservation on platforms such as Zenodo, granting it with a citable DOI.
+
+##### Conferences and Seminars
+
+Since **CONMAN** started only six months ago, members of the project did not have the occasion (yet) to present their work in conferences.
+Plans are being made however to send two contributions to the [APD Division of Fluid Dynamics 76th Annual Meeting](https://www.2023apsdfd.org/) to be held in Washington DC, USA late November 2023.
+These contributions include:
+
+- *A unifying framework for data-driven linear modeling with rank constraints.* **J.-Ch. Loiseau** and S. L. Brunton.
+- *D-optimal sensor placement with submodular optimization.* **J.-Ch. Loiseau**.
+
+Additionally, two seminars in French research laboratories are currently planned for Fall 2023:
+
+- *Tips and tricks for Koopman analysis.* **J.-Ch. Loiseau**. ENSTA Paris, institut Polytechnique de Paris, France.
+- *Data-driven reduced-order modeling.* **J-Ch. Loiseau**. Laboratoire de Physique, ENS Lyon, France.
+
+As the project continues, great care will be taken to provide the postdoctoral research and Ph. D. candidate with opportunities to present their works at international conferences and seminars.
+
+### What's next?{#sec-next}
+
+During the next period (July-December 2023), efforts will be focused on wrapping up the implementations of the baseline models in our different libraries.
+A particular attention will be devoted to *validation & verification* of the results for these baseline models as well as to their *reproducibility*.
+This includes:
+
+- Validation and verification of the BPOD implementation in `nekStab` against applications available in the literature.
+- Setting up the continuous integration feature for all the packages developed on GitHub.
+- Designing informative unit tests for all the packages to minimize the chances of an unwanted behaviour slipping in.
+- Setting up our *reproducibility pipeline* for results presented in journal articles using the [Quarto](https://quarto.org/) publishing system and [showyourwork](https://github.com/showyourwork/showyourwork).
+
+From a purely scientific point of view, we expect the following:
+
+- Putting the final piece to the unifying framework for data-driven linear modeling with rank constraint, including publication of the journal article.
+- Formalising the proof of the submodularity (or submodular relaxation) of the sensor/actuator placement problem, both in the open-loop and closed-loop setups.
+- Obtaining the first benchmark results for the submodular sensor placement vs. the approach proposed by @manohar_optimal_2022 on the linearized Ginzburg-Landau equation.
+
+It needs to be emphasized finally that a large portion of the time of J.-Ch. Loiseau will be dedicated to the education of the Ph. D. candidate arriving early Fall 2023.
+This includes familiarizing the Ph. D. candidate with both the theoretical and numerical tools on which this project relies as well as to the French Higher Education and Research ecosystem.
+
+## Bibliography {.unnumbered}

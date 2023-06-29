@@ -1,0 +1,75 @@
+---
+title: "Softwares"
+---
+
+This page lists all of the softwares used or developped during the project.
+A particular emphasis is given to *free and open-source softwares* following the *FAIR* principles: Free, Accessible, Inclusive and Reproducible.
+To foster scientific collaborations, all codes are developped in dedicated public [GitHub](github.com) repositories.
+For long-term preservation, every major release is also hosted on [Zenodo]() and [recherche.data.gouv.fr]() with a citable DOI for proper referencing.
+
+## nekStab
+
+**nekStab** is an *open-source* library written in F77/F90 aiming at extending the capabilities of [Nek5000](https://nek5000.mcs.anl.gov/), a well established spectral element solver in the academic hydrodynamic and aerodynamic community.
+Leveraging Krylov-based techniques and Nek5000's high-performance time-stepping capabilities, **nekStab** provides a set of algorithms to compute stable and unstable fixed points or periodic orbits of the Navier-Stokes equations as well as quantifying their stability properties through eigenvalue or singular value analysis of the linearized Navier-Stokes operator.
+**nekStab** has initially been developped by [J.-Ch. Loiseau]() and [R. S. Frantz]().
+
+Over the duration of the current project, the capabilities of **nekStab** will be extended to include : batch and streaming algorithms for *Proper Orthogonal Decomposition* and *Dynamic Mode Decomposition* of high-dimensional velocity fields, *Balanced Proper Orthogonal Decomposition* and *Optimal Time Depedent* modes for projection-based reduced-order modeling of the linearized Navier-Stokes equations, as well as gradient-based algorithms for $H_2$ optimal sensors and actuators placement.
+
+**Related publications**
+
+- R. S. Frantz, J.-Ch. Loiseau, and J.-Ch. Robinet. *Krylov methods for large-scale dynamical systems: applications in fluid dynamics.* Applied Mechanics Review, vol. 75 (3), May 2023. [[AMR]](https://asmedigitalcollection.asme.org/appliedmechanicsreviews/article-abstract/75/3/030802/1156502/Krylov-Methods-for-Large-Scale-Dynamical-Systems) [[arXiv]](https://arxiv.org/pdf/2301.12940.pdf)
+
+|   |   |
+|---|---|
+| **{{< fa brands github size=1em >}} repository** | [nekstab.github.io](nekstab.github.io) |
+| **License** | BSD |
+| **Programming Language** | Fortran 77 / Fortran 90 |
+| **Core developpers** | [J.-Ch. Loiseau](loiseau.github.io) and [R. S. Frantz]() |
+
+## SubmodularOpt.jl
+
+Following a D-optimal design strategy, sensors and/or actuators placement for linear dynamical systems can be formulated as a determinant maximization problem of a suitably defined Fisher information matrix
+
+$$
+\mathbf{F} = \mathbf{C}^T \mathbf{S}^T \mathbf{Q}^{-1} \mathbf{S} \mathbf{C} + \boldsymbol{\Sigma}^{-1}
+$$
+
+where $\mathbf{C}$ describes for instance all of the sensors available, $\mathbf{S}$ is a *selection operator* to be optimized, $\mathbf{Q}$ is the sensor noise covariance matrix, and $\boldsymbol{\Sigma}$ the state covariance matrix.
+Given $m$ possible sensor locations and a budget for only $p$ sensors, there are
+
+$$
+\binom{m}{p} = \dfrac{m!}{\left(m - p\right)! \times p!}
+$$
+
+possible combinations, making it an intractable combinatorial problem even for a moderately large search space.
+Yet, under certains conditions, this objective function is a submodular monotone function whose greedy maximization benefits from a $1 - \frac{1}{e}$ approximation guarantee.
+
+[SubmodularOpt.jl](https://github.com/loiseaujc/SubmodularOpt.jl) is a Julia package currently under active development by members of the **CONMAN** project.
+It provides efficient implementations of standard submodular function maximization algorithms, including the *Lazy Greedy* ([Minoux, 1978](https://link.springer.com/chapter/10.1007/BFb0006528)) or the *Lazier than Lazy Greedy* ([Mirzasoleiman et al., 2015](https://ojs.aaai.org/index.php/AAAI/article/view/9486)) algorithms for maximizing a monotone submodular set function with cardinality constraint.
+Inspired from the concave-convex procedure for minimizing a difference of convex functions, [SubmodularOpt.jl](https://github.com/loiseaujc/SubmodularOpt.jl) also provides an implementation of the *SubSup procedure* ([Iyer & Bilmes, 2013](https://arxiv.org/abs/1207.0560)) for the minimization/maximization of the difference of two submodular functions.
+
+**Related Publications**
+
+- TBA
+
+|   |   |
+|---|---|
+| **{{< fa brands github size=1em >}} repository** | [SubmodularOpt.jl](https://github.com/loiseaujc/SubmodularOpt.jl) |
+| **License** | MIT |
+| **Programming Language** | Julia |
+| **Core developpers** | [J.-Ch. Loiseau](loiseau.github.io) |
+
+<!---
+## DataDrivenLinearModels.jl
+
+**Related Publications**
+
+- TBA
+
+|   |   |
+|---|---|
+| **Link to GitHub repository** | [DataDrivenLinearModels.jl](https://github.com/loiseaujc/DataDrivenLinearModels.jl) |
+| **Licence** | MIT |
+| **Programming Language** | Julia |
+| **Core developpers** | [J.-Ch. Loiseau](loiseau.github.io) |
+--->
