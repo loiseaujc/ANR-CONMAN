@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jean-Christophe Loiseau">
+<meta name="dcterms.date" content="2023-06-01">
+
+<title>ANR CONMAN – Data-driven CONtrol and MANifold Interpolation - Progress Report n°1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title"><strong>ANR CONMAN</strong> – Data-driven <strong>CON</strong>trol and <strong>MAN</strong>ifold Interpolation</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../roadmap.html" rel="" target="">
+ <span class="menu-text">Roadmap</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../softwares.html" rel="" target="">
+ <span class="menu-text">Softwares</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../scientific_production.html" rel="" target="">
+ <span class="menu-text">Scientific Production</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#identification" id="toc-identification" class="nav-link active" data-scroll-target="#identification"><span class="header-section-number">1</span> Identification</a></li>
+  <li><a href="#progress-report" id="toc-progress-report" class="nav-link" data-scroll-target="#progress-report"><span class="header-section-number">2</span> Progress Report</a>
+  <ul class="collapse">
+  <li><a href="#sec-baseline" id="toc-sec-baseline" class="nav-link" data-scroll-target="#sec-baseline"><span class="header-section-number">2.1</span> Baseline models</a></li>
+  <li><a href="#sec-numerics" id="toc-sec-numerics" class="nav-link" data-scroll-target="#sec-numerics"><span class="header-section-number">2.2</span> Theoretical framework and numerical tools</a></li>
+  <li><a href="#sec-flowconf" id="toc-sec-flowconf" class="nav-link" data-scroll-target="#sec-flowconf"><span class="header-section-number">2.3</span> Canonical flow configurations</a></li>
+  <li><a href="#sec-conclusion" id="toc-sec-conclusion" class="nav-link" data-scroll-target="#sec-conclusion"><span class="header-section-number">2.4</span> Problems encountered and actions taken for scientific communication and dissemination</a></li>
+  <li><a href="#sec-next" id="toc-sec-next" class="nav-link" data-scroll-target="#sec-next"><span class="header-section-number">2.5</span> What’s next?</a></li>
+  </ul></li>
+  <li><a href="#bibliography" id="toc-bibliography" class="nav-link" data-scroll-target="#bibliography">Bibliography</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Progress Report n°1</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jean-Christophe Loiseau </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 1, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>This is the first progress report for the ANR JCJC project <strong>CONMAN</strong>, covering the period from January 1st, 2023 to June 30th, 2023.</p>
+<section id="identification" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="identification"><span class="header-section-number">1</span> Identification</h2>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td><strong>Project acronym</strong></td>
+<td><strong>CONMAN</strong></td>
+</tr>
+<tr class="even">
+<td><strong>Project title</strong></td>
+<td>Data-driven Control and Manifold Interpolation</td>
+</tr>
+<tr class="odd">
+<td><strong>Funding program</strong></td>
+<td>Programme Jeunes Chercheuses Jeunes Chercheurs</td>
+</tr>
+<tr class="even">
+<td><strong>Agreement number</strong></td>
+<td>ANR-22-CE46-0008</td>
+</tr>
+<tr class="odd">
+<td><strong>Principal Investigator</strong></td>
+<td><a href="mailto:jean-christophe.loiseau@ensam.eu">Jean-Christophe Loiseau</a></td>
+</tr>
+<tr class="even">
+<td><strong>Starting date</strong></td>
+<td>01/01/2023</td>
+</tr>
+<tr class="odd">
+<td><strong>Duration</strong></td>
+<td>48 months</td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td><strong>Author of report</strong></td>
+<td><a href="mailto:jean-christophe.loiseau@ensam.eu">Jean-Christophe Loiseau</a></td>
+</tr>
+<tr class="even">
+<td><strong>Date</strong></td>
+<td>June 2023</td>
+</tr>
+<tr class="odd">
+<td><strong>Period covered</strong></td>
+<td>01/01/2023 - 30/06/2023</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="progress-report" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="progress-report"><span class="header-section-number">2</span> Progress Report</h2>
+<p>Applications of closed-loop flow control have epic proportions: drag reduction, lift increase, mixing enhancement, or noise mitigation. It is however challenged by strong nonlinearities, partial state information, parametric dependencies, or time delays. By focusing on linear time-invariant (LTI) dynamical systems of the form</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dfrac{d\mathbf{x}}{dt} &amp; = \mathbf{Ax} + \mathbf{Bu} \\
+\mathbf{y} &amp; = \mathbf{Cx} + \mathbf{Du},
+\end{aligned}
+\]</span></p>
+<p>the present project aims at tackling some of these problems, most notably the parametric dependencies for reduced-order models. Likewise, optimal actuator and sensor placement (i.e.&nbsp;design of <span class="math inline">\(\mathbf{B}\)</span> and <span class="math inline">\(\mathbf{C}\)</span>, respectively) still is an unsolved combinatorial optimization problem whose solution impacts all downstream tasks and applications.</p>
+<p>To tackle these issues, the <strong>CONMAN</strong> project follows two parallel, albeit complementary routes :</p>
+<ol type="1">
+<li>The development of a unified framework for data-driven linear modeling of parameterized systems based on the joint use of classical low-rank approximation techniques for dimensionality reduction purposes combined with high-order interpolation on matrix manifolds to capture the parametric dependencies.</li>
+<li>The formulation of a combinatorial optimization problem for actuators and sensors placement and its subsequent relaxation into a tractable form. Particular attention is being paid to highly efficient yet relevent (from an experimental point of view) algorithms with certains optimality guarantees.</li>
+</ol>
+<p>In agreement with the recommendations put forth by Prof.&nbsp;<a href="https://lorenabarba.com/">Lorena Barba</a> (George Washington University, USA) during her recent invited lecture <a href="https://figshare.com/articles/presentation/Anti_Patterns_of_Scientific_Machine_Learning_to_Fool_the_Masses_A_Call_for_Open_Science/23579808/1"><em>Anti Patterns of Scientific Machine Learning to Fool the Masses</em></a> at the <a href="https://pasc23.pasc-conference.org/">Platform for Advanced Scientific Computing Conference</a> (PASC23), extra care is taken in choosing the baseline models against which the rest of the techniques developped during the project will be compared in order to ensure fair and meaningful benchmarks. As a consequence, the first six months of this project have been dedicated to a thorough literature review as well as implementing some of the building blocks needed for the baseline reference models.</p>
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hiring process for the Postdoctoral Research
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>At the time of acceptance by ANR, plan was to hire a postdoctoral researcher in the first quarter of 2023. Unfortunately, no candidate was found before May 2023. The successful hiree, Simon Kern, has defended his Ph. D. work at KTH early June 2023 and will join <strong>DynFluid</strong> at the begining of the Fall semester. These human ressources issues forced us to postpone some tasks in <em>Work Package #1</em> by a few months. This should not impact however the overall calendar of the project.</p>
+</div>
+</div>
+<p>This is the first technical report (D0.1) of the <strong>CONMAN</strong> project. It is organized as follows: <a href="#sec-baseline">Section&nbsp;2.1</a> provides a thorough presentation of the baseline techniques, namely <em>Balanced Proper Orthogonal Decomposition</em> for reduced-order modeling and the <em>POD-QR</em> method for near-optimal actuators/sensors selection. <a href="#sec-numerics">Section&nbsp;2.2</a> describes the theoretical tools already available to the project members or under active development, along with their numerical implementations. Then, <a href="#sec-flowconf">Section&nbsp;2.3</a> introduces the canonical flow configurations used throughout the project for benchmark purposes. These canonical flow configurations also serve as pedagogical examples to emphasizes some of the challenges tackled in this project and problems posed by the inconsiderate used of advanced machine learning techniques. Finally, <a href="#sec-conclusion">Section&nbsp;2.4</a> discusses some of the problems faced by members of the project as well as presenting some of the actions taken for the scientific communication and dissemination while <a href="#sec-next">Section&nbsp;2.5</a> teases some of the scientific advances to be expected for the next technical report (D0.2, due Dec.&nbsp;2023).</p>
+<section id="sec-baseline" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="sec-baseline"><span class="header-section-number">2.1</span> Baseline models</h3>
+<section id="reduced-order-modeling" class="level4" data-number="2.1.1">
+<h4 data-number="2.1.1" class="anchored" data-anchor-id="reduced-order-modeling"><span class="header-section-number">2.1.1</span> Reduced-order modeling</h4>
+<p>Direct design of controllers and estimators for high-dimensional dynamical systems resulting from the discretization of partial differential equations such as the Navier-Stokes equations is often faced with the <em>curse of dimensionality</em>. Model order reduction is thus a necessary step before control synthesis. Numerous techniques have been proposed in the literature. In this project, we restrict our attention to <em>Balanced Truncation</em> (see <a href="#sec-bt">Section&nbsp;2.1.1.1</a>) and its computationally efficient (albeit equivalent) alternative <em>Balanced Proper Orthogonal Decomposition</em> (see <a href="#sec-bpod">Section&nbsp;2.1.1.2</a>).</p>
+<section id="sec-bt" class="level5" data-number="2.1.1.1">
+<h5 data-number="2.1.1.1" class="anchored" data-anchor-id="sec-bt"><span class="header-section-number">2.1.1.1</span> Balanced Truncation</h5>
+<p>Given a multiple input multiple output (MIMO) linear time-invariant (LTI) dynamical system</p>
+<p><span class="math display">\[
+\begin{aligned}
+    \dfrac{d\mathbf{x}}{dt} &amp; = \mathbf{Ax} + \mathbf{Bu} \\
+    \mathbf{y} &amp; = \mathbf{Cx} + \mathbf{Du}
+\end{aligned}
+\]</span></p>
+<p>where <span class="math inline">\(\mathbf{x} \in \mathbb{R}^n\)</span> is the state vector of the system, <span class="citation" data-cites="moore_principal_1981">Moore (<a href="#ref-moore_principal_1981" role="doc-biblioref">1981</a>)</span> proposed the <em>Balanced Truncation</em> (BT) procedure. Starting from the <em>observability</em> gramian <span class="math inline">\(\mathbf{W}_o\)</span> and <em>controllability</em> gramian <span class="math inline">\(\mathbf{W}_c\)</span> solution to the Lyapunov equations</p>
+<p><span class="math display">\[
+\mathbf{A}^* \mathbf{W}_o + \mathbf{W}_o \mathbf{A} = - \mathbf{C}^* \mathbf{C} \quad \text{and} \quad \mathbf{A} \mathbf{W}_c + \mathbf{W}_c \mathbf{A}^* = - \mathbf{BB}^*,
+\]</span></p>
+<p>Balanced Truncation first applies a <em>balancing transformation</em>, i.e.&nbsp;finding an invertible linear transformation <span class="math inline">\(\hat{\mathbf{x}} = \mathbf{T} \mathbf{x}\)</span> such that</p>
+<p><span class="math display">\[
+\mathbf{T} \mathbf{W}_c \mathbf{T}^{*} = \mathbf{T}^{-*} \mathbf{W}_o \mathbf{T}^{-1} = \boldsymbol{\Sigma}
+\]</span></p>
+<p>where <span class="math inline">\(\boldsymbol{\Sigma} \in \mathbb{R}^{n \times n}\)</span> is a diagonal matrix formed from the <em>Hankel Singular Values</em> of the system. The system in the original coordinates</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+    \begin{array}{c|c}
+    \mathbf{A} &amp; \mathbf{B} \\
+    \hline
+    \mathbf{C} &amp; \mathbf{0}
+    \end{array}
+\end{pmatrix}
+\]</span></p>
+<p>gets transformed to</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+    \begin{array}{c|c}
+    \mathbf{TAT}^{-1} &amp; \mathbf{TB} \\
+    \hline
+    \mathbf{CT}^{-1} &amp; \mathbf{0}
+    \end{array}
+\end{pmatrix}
+\]</span></p>
+<p>in the balancing coordinate system. Although in this new reference frame the observability and controllability gramians are now diagonal and equal, the system remains <span class="math inline">\(n\)</span>-dimensional. Assuming the balancing transformation <span class="math inline">\(\mathbf{T}\)</span> has been computed such that the Hankel singular values in <span class="math inline">\(\boldsymbol{\Sigma}\)</span> are sorted in decreasing order, <span class="citation" data-cites="moore_principal_1981">Moore (<a href="#ref-moore_principal_1981" role="doc-biblioref">1981</a>)</span> proposed to simply truncate this transformation by considering only the most jointly controllable and observable directions. Denoting by <span class="math inline">\(\boldsymbol{\Psi}_r\)</span> and <span class="math inline">\(\boldsymbol{\Phi}_r^*\)</span> the <span class="math inline">\(r\)</span> leading columns of <span class="math inline">\(\mathbf{T}^{-1}\)</span> and rows of <span class="math inline">\(\mathbf{T}\)</span>, respectively, we arrive at the <em>balanced truncation model</em></p>
+<p><span class="math display">\[
+\begin{aligned}
+    \dfrac{d \hat{\mathbf{x}}}{dt} &amp; = \boldsymbol{\Phi}_r^* \mathbf{A} \boldsymbol{\Psi}_r \hat{\mathbf{x}} + \boldsymbol{\Phi}_r^* \mathbf{Bu} \\
+    \mathbf{y} &amp; \simeq \mathbf{C} \boldsymbol{\Psi}_r \hat{\mathbf{x}}.
+\end{aligned}
+\]</span></p>
+<p>with the original state vector being recovered from <span class="math inline">\(\mathbf{x} \simeq \boldsymbol{\Psi}_r \hat{\mathbf{x}}\)</span>. Although balanced truncation is not optimal in any norm, the <span class="math inline">\(\mathcal{H}_{\infty}\)</span> norm of the error resulting from balanced truncation is upper bounded by twice the sum of the neglected Hankel singular values. Upper bounds using different norms (e.g.&nbsp;<span class="math inline">\(\mathcal{H}_2\)</span> norm) and their mathematical proofs can be found in the text book by <span class="citation" data-cites="antoulas_approximation_2005">Antoulas (<a href="#ref-antoulas_approximation_2005" role="doc-biblioref">2005</a>, see chap.&nbsp;7)</span>.</p>
+<p>Despite its desirable mathematical properties, balanced truncation suffers from a crucial limitation: its computational cost. It requires having access to both the observability and controllability gramians of the system. These are <span class="math inline">\(n \times n\)</span> symmetric positive definite solutions to Lyapunov equations, requiring <span class="math inline">\(\mathcal{O}(n^6)\)</span> operations to compute with standard algorithms. Balanced truncation thus becomes rapidly computationally intractable as the dimension of the system increases. This observation motivated <span class="citation" data-cites="rowley_model_2005">Rowley (<a href="#ref-rowley_model_2005" role="doc-biblioref">2005</a>)</span> to develop the <em>Balanced Proper Orthogonal Decomposition</em> (BPOD), a reformulation of balanced truncation computable solely from simulation data.</p>
+</section>
+<section id="sec-bpod" class="level5" data-number="2.1.1.2">
+<h5 data-number="2.1.1.2" class="anchored" data-anchor-id="sec-bpod"><span class="header-section-number">2.1.1.2</span> Balanced Proper Orthogonal Decomposition</h5>
+<p><em>Balanced Proper Orthogonal Decomposition</em> (BPOD) was proposed by Clarence Rowley from Princepton University (USA) in his seminal paper <span class="citation" data-cites="rowley_model_2005">(<a href="#ref-rowley_model_2005" role="doc-biblioref">Rowley 2005</a>)</span> as a computable alternative to balanced truncation for large-scale LTI systems. While the controllability and observability gramians are solutions to Lyapunov equations, they can also be defined as</p>
+<p><span class="math display">\[
+\mathbf{W}_c = \int_{0}^{\infty} \exp \left( \tau \mathbf{A} \right) \mathbf{BB}^T \exp \left( \tau \mathbf{A}^T \right) \ \mathrm{d} \tau
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\mathbf{W}_o = \int_{0}^{\infty} \exp \left( \tau \mathbf{A}^T \right) \mathbf{C}^T \mathbf{C} \exp \left( \tau \mathbf{A} \right) \ \mathrm{d} \tau,
+\]</span></p>
+<p>respectively.</p>
+<p><strong>Empirical controllability gramian –</strong> Provided the matrix <span class="math inline">\(\mathbf{A}\)</span> is Hurwitz, the controllability gramian <span class="math inline">\(\mathbf{W}_c\)</span> can be approximated to an arbitrary tolerance using a simple quadrature scheme. For a system with <span class="math inline">\(p\)</span> inputs, let the input-to-state matrix be</p>
+<p><span class="math display">\[
+\mathbf{B} = \begin{bmatrix} \mathbf{b}_1 &amp; \mathbf{b}_2 &amp; \cdots &amp; \mathbf{b}_p \end{bmatrix} \in \mathbb{R}^{n \times p}.
+\]</span></p>
+<p>The state responses to unit impulses are given by</p>
+<p><span class="math display">\[
+\begin{aligned}
+    \mathbf{x}_1(t) &amp; = \exp \left( t \mathbf{A} \right) \mathbf{b}_1 \quad \text{Response to impulsive input } u_1(t) = \delta(t) \\
+    \mathbf{x}_2(t) &amp; = \exp \left( t \mathbf{A} \right) \mathbf{b}_2 \quad \text{Response to impulsive input } u_2(t) = \delta(t) \\
+    \vdots \\
+    \mathbf{x}_p(t) &amp; = \exp \left( t \mathbf{A} \right) \mathbf{b}_p \quad \text{Response to impulsive input } u_p(t) = \delta(t).
+\end{aligned}
+\]</span></p>
+<p>The controllability gramian <span class="math inline">\(\mathbf{W}_c\)</span> can be expressed as</p>
+<p><span class="math display">\[
+\mathbf{W}_c = \int_{0}^{\infty} \left( \mathbf{x}_1(\tau) \mathbf{x}_1^T(\tau) + \mathbf{x}_2(\tau) \mathbf{x}_2^T(\tau) + \cdots + \mathbf{x}_p(\tau) \mathbf{x}_p^T(\tau) \right) \ \mathrm{d} \tau.
+\]</span></p>
+<p>If the impulse responses are given at discrete times <span class="math inline">\(t_1, t_2, \cdots, t_m\)</span>, as is typical in numerical simulations, this integral can be approximated with a simple quadrature sum. Denoting the data matrix formed from the impulse responses as</p>
+<p><span class="math display">\[
+\mathbf{X} = \begin{bmatrix} \mathbf{x}_1(t_1) \sqrt{w_1} &amp; \cdots &amp; \mathbf{x}_1(t_m) \sqrt{w_m} &amp; \cdots &amp; \mathbf{x}_p(t_1)\sqrt{w_1} &amp; \cdots &amp; \mathbf{x}_p(t_m) \sqrt{w_m} \end{bmatrix},
+\]</span></p>
+<p>where <span class="math inline">\(w_i\)</span> are quadrature coefficients, the <em>empirical controllability gramian</em> <span class="math inline">\(\hat{\mathbf{W}_c}\)</span> is computed as</p>
+<p><span class="math display">\[
+\hat{\mathbf{W}_c} = \mathbf{XX}^T.
+\]</span></p>
+<p>If <span class="math inline">\(\mathbf{A}\)</span> is Hurwitz, this empirical approximation converges to the true controllability gramian as <span class="math inline">\(t_m\)</span> tends to infinity. For dissipative systems, the data matrix <span class="math inline">\(\mathbf{X}\)</span> often tends to be low-rank, a property leveraged later on in the BPOD algorithm.</p>
+<p><strong>Empirical observability gramian –</strong> For LTI systems, observability is the <em>dual</em> of controllability. Hence, similar techniques can be employed to approximate the observability gramian <span class="math inline">\(\mathbf{W}_o\)</span>. Let the measurement matrix <span class="math inline">\(\mathbf{C}\)</span> be</p>
+<p><span class="math display">\[
+\mathbf{C} = \begin{bmatrix} \mathbf{c}_1^T \\ \mathbf{c}_2^T \\ \vdots \\ \mathbf{c}_q^T \end{bmatrix}.
+\]</span></p>
+<p>The impulse responses of the <em>adjoint system</em></p>
+<p><span class="math display">\[
+\dfrac{d\mathbf{z}}{dt} = \mathbf{A}^T \mathbf{z} + \mathbf{C}^T \mathbf{v}
+\]</span></p>
+<p>are defined as</p>
+<p><span class="math display">\[
+\begin{aligned}
+    \mathbf{z}_1(t) &amp; = \exp \left( t \mathbf{A}^T \right) \mathbf{c}_1 \quad \text{Response to impulsive input } v_1(t) = \delta(t) \\
+    \mathbf{z}_2(t) &amp; = \exp \left( t \mathbf{A}^T \right) \mathbf{c}_2 \quad \text{Response to impulsive input } v_2(t) = \delta(t) \\
+    \vdots \\
+    \mathbf{z}_q(t) &amp; = \exp \left( t \mathbf{A}^T \right) \mathbf{c}_q \quad \text{Response to impulsive input } v_q(t) = \delta(t).
+\end{aligned}
+\]</span></p>
+<p>The observability gramian <span class="math inline">\(\mathbf{W}_o\)</span> can be expressed as</p>
+<p><span class="math display">\[
+\mathbf{W}_o = \int_{0}^{\infty} \left( \mathbf{z}_1(t) \mathbf{z}_1^T(t) + \mathbf{z}_2(t)\mathbf{z}_2^T(t) + \cdots + \mathbf{z}_q(t) \mathbf{z}_q^T(t) \right) \ \mathrm{d}t.
+\]</span></p>
+<p>Denoting the data matrix formed from the adjoint impulse responses as</p>
+<p><span class="math display">\[
+\mathbf{Y} = \begin{bmatrix} \mathbf{z}_1(t_1) \sqrt{w_1} &amp; \cdots &amp; \mathbf{z}_1(t_m) \sqrt{w_m} &amp; \cdots &amp; \mathbf{z}_q(t_1)\sqrt{w_1} &amp; \cdots &amp; \mathbf{z}_q(t_m) \sqrt{w_m} \end{bmatrix},
+\]</span></p>
+<p>the <em>empirical observability gramian</em> <span class="math inline">\(\hat{\mathbf{W}_o}\)</span> is computed as</p>
+<p><span class="math display">\[
+\hat{\mathbf{W}_o} = \mathbf{YY}^T.
+\]</span></p>
+<p>Once again, if <span class="math inline">\(\mathbf{A}\)</span> is Hurwitz, this empirical approximation converges to the true observability gramian as <span class="math inline">\(t_m\)</span> tends to infinity. Likewise, for dissipative systems, the data matrix <span class="math inline">\(\mathbf{Y}\)</span> often tends to be low-rank.</p>
+<p><strong>The BPOD procedure –</strong> Given the data matrices <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{Y}\)</span>, BPOD computes a convergent approximation of balanced truncation in two steps. First, the singular value decomposition of the inner-product matrix <span class="math inline">\(\mathbf{Y}^T \mathbf{X}\)</span> is computed, leading to</p>
+<p><span class="math display">\[
+\mathbf{Y}^T \mathbf{X}
+=
+\begin{bmatrix}
+\mathbf{U}_1 &amp; \mathbf{U}_2
+\end{bmatrix}
+\begin{bmatrix}
+\boldsymbol{\Sigma}_1 &amp; 0 \\ 0 &amp; \boldsymbol{\Sigma}_2
+\end{bmatrix}
+\begin{bmatrix} \mathbf{V}_1^T \\ \mathbf{V}_2^T \end{bmatrix}.
+\]</span></p>
+<p>The balancing modes are then computed as</p>
+<p><span class="math display">\[
+\boldsymbol{\Psi} = \mathbf{XV}_1 \boldsymbol{\Sigma}_1^{-\frac12} \quad \text{and} \quad \boldsymbol{\Phi} = \boldsymbol{\Sigma}^{-\frac12} \mathbf{U}_1^T \mathbf{Y}^T.
+\]</span></p>
+<p>A proposition proved by <span class="citation" data-cites="rowley_model_2005">Rowley (<a href="#ref-rowley_model_2005" role="doc-biblioref">2005</a>)</span> establishes that if <span class="math inline">\(r = n\)</span> (i.e.&nbsp;the gramians are full rank), the matrix <span class="math inline">\(\boldsymbol{\Sigma}\)</span> contains the Hankel singular values of the systems, while <span class="math inline">\(\boldsymbol{\Psi}\)</span> determines the balancing transformation. Otherwise, <span class="math inline">\(\boldsymbol{\Phi}\)</span> and <span class="math inline">\(\boldsymbol{\Psi}\)</span> approximate the matrices obtained from balanced truncation.</p>
+<p>Although BPOD formally converges to balanced truncation only in the limit <span class="math inline">\(t_m \to \infty\)</span>, a wealth of empirical evidence in the literature highlights that the error incurred by BPOD benefits from the same upper bounds as the error resulting from balanced truncation. The BPOD reduced order model</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dfrac{d \mathbf{x}_r}{dt} &amp; = \mathbf{A}_r \mathbf{x}_r + \mathbf{B}_r \mathbf{u} \\
+\mathbf{y}_r &amp; = \mathbf{C}_r \mathbf{x}_r + \mathbf{Du}
+\end{aligned}
+\]</span></p>
+<p>is constructed in an analogous fashion as the one resulting from balanced truncation. One major limitation of BPOD is however the need for the adjoint system. Yet, the solid mathematical grounds of balanced truncation combined with the computational efficiency of BPOD makes this procedure an excellent baseline model against which to benchmark the performances of data-driven models developed subsequently in the <strong>CONMAN</strong> project.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Implementation of BPOD on the <code>nekStab</code> library
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Balanced Proper Orthogonal Decomposition is currently being implemented in the development branch of our open-source library <code>nekStab</code>. Being based on the high-performance CFD solver <code>Nek5000</code>, the BPOD implementation in <code>nekStab</code> will enable us to apply this procedure to design reduced-order models of a wide variety of flow configurations including fully three-dimensional flows, a feast never achieved (to the best of our knowledge) in the fluid dynamics literature.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="sensor-and-actuator-placement" class="level4" data-number="2.1.2">
+<h4 data-number="2.1.2" class="anchored" data-anchor-id="sensor-and-actuator-placement"><span class="header-section-number">2.1.2</span> Sensor and actuator placement</h4>
+<p>Although reduced-order modeling is a key enabler for analysis and feedback control, actuators and sensors placement (i.e.&nbsp;designing <span class="math inline">\(\mathbf{B}\)</span> and <span class="math inline">\(\mathbf{C}\)</span>) is an upstream task having important downstream consequences. Consider the situation where <span class="math inline">\(m\)</span> possible sensors are available albeit we only have the budget for <span class="math inline">\(p\)</span> of them. There are</p>
+<p><span class="math display">\[
+\binom{m}{p} = \dfrac{m!}{\left(m-p \right)! \times p!}
+\]</span></p>
+<p>combinations to choose from. No matter the performance index considered, sensors selection thus fundamentally is a rapidly intractable combinatorial optimization problem.</p>
+<p>Many techniques have been proposed to approximately solve this problem greedily as an alternative to the combinatorial approach. These include <em>Gappy POD</em> <span class="citation" data-cites="willcox_unsteady_2006">(<a href="#ref-willcox_unsteady_2006" role="doc-biblioref">Willcox 2006</a>)</span>, the <em>Discrete Empirical Interpolation Method</em> <span class="citation" data-cites="drmac_new_2016">(<a href="#ref-drmac_new_2016" role="doc-biblioref">Drmac and Gugercin 2016</a>)</span> or through <em>pivoted QR decomposition of the POD matrix</em> <span class="citation" data-cites="manohar_data-driven_2018">(<a href="#ref-manohar_data-driven_2018" role="doc-biblioref">Manohar et al. 2018</a>)</span>. All these techniques are however primarily targetting the state <em>reconstruction</em> problem. Given a matrix of possible measurements <span class="math inline">\(\mathbf{C}\)</span> such that</p>
+<p><span class="math display">\[
+\mathbf{y} \simeq \mathbf{SCx},
+\]</span></p>
+<p>these techniques aim at optimizing the selection matrix <span class="math inline">\(\mathbf{S} \in \mathbb{R}^{p \times n}\)</span> such that the state vector <span class="math inline">\(\mathbf{x}\)</span> is best estimated from the sensor measurements <span class="math inline">\(\mathbf{y}\)</span> in the least-squares sense. Although of practical interest for linear inverse problems, these techniques cannot be directly applied to select sensors or actuators for an LTI dynamical system. For systems with actuation, it is necessary to consider simultaneously the placement of sensors and actuators since the most observable and controllable subspaces might be quite different. Current state-of-the-art techniques include <span class="citation" data-cites="chen_h2_2011">Chen and Rowley (<a href="#ref-chen_h2_2011" role="doc-biblioref">2011</a>)</span>, <span class="citation" data-cites="burns_optimal_2021">Burns and Herdman (<a href="#ref-burns_optimal_2021" role="doc-biblioref">2021</a>)</span>, or <span class="citation" data-cites="manohar_optimal_2022">Manohar, Kutz, and Brunton (<a href="#ref-manohar_optimal_2022" role="doc-biblioref">2022</a>)</span> for instance. Although we only present the ideas put forth by <span class="citation" data-cites="manohar_optimal_2022">Manohar, Kutz, and Brunton (<a href="#ref-manohar_optimal_2022" role="doc-biblioref">2022</a>)</span> in this technical report for the sake of conciseness, all three of the aforementionned techniques will be considered as possible baseline reference in the rest of the <strong>CONMAN</strong> project.</p>
+<p><strong>Reminder about LTI systems –</strong> Given a linear time-invariant dynamical system</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dfrac{d\mathbf{x}}{dt} &amp; = \mathbf{Ax} + \mathbf{Bu} \\
+\mathbf{y} &amp; = \mathbf{Cx}.
+\end{aligned}
+\]</span></p>
+<p>Its observability gramian <span class="math inline">\(\mathbf{W}_o\)</span> and controllability gramian <span class="math inline">\(\mathbf{W}_c\)</span> are defined as</p>
+<p><span class="math display">\[
+\mathbf{W}_o = \int_{0}^{\infty} \exp \left( t \mathbf{A}^T \right) \mathbf{C}^T \mathbf{C} \exp \left( t \mathbf{A} \right) \ \mathrm{d}t
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\mathbf{W}_c = \int_{0}^{\infty} \exp \left( t \mathbf{A} \right) \mathbf{BB}^T \exp \left( t \mathbf{A}^T \right) \ \mathrm{d}t.
+\]</span></p>
+<p>Because they depend explicitly on <span class="math inline">\(\mathbf{B}\)</span> and <span class="math inline">\(\mathbf{C}\)</span>, the gramians are often used to evaluate the observability/controllability of a given sensor and actuator placement. One standard performance index is the <span class="math inline">\(\mathcal{H}_2\)</span> norm of the system, measuring the average output gain over all frequencies of the input. Given the transfer function <span class="math inline">\(\mathbf{G}(s) = \mathbf{C} \left( s \mathbf{I} - \mathbf{A} \right)^{-1} \mathbf{B}\)</span>, the <span class="math inline">\(\mathcal{H}_2\)</span> norm of the system is defined as</p>
+<p><span class="math display">\[
+\| \mathbf{G} \|_{\mathcal{H}_2}^2 = \dfrac{1}{4\pi^2} \int_{0}^{\infty} \mathrm{trace} \left( \mathbf{G}^H(i\omega) \mathbf{G}(i\omega) \right) \ \mathrm{d}\omega.
+\]</span></p>
+<p>By the Plancherel theorem, it can also be defined in the time-domain using the impulse response <span class="math inline">\(y_{ij}(t) = \mathbf{C}_i \mathrm{e}^{t\mathbf{A}} \mathbf{B}_j\)</span> as</p>
+<p><span class="math display">\[
+\begin{aligned}
+\| \mathbf{G} \|_{\mathcal{H}_2}^2 &amp; = \int_{0}^{\infty} \mathrm{trace} \left( \mathbf{C} \mathrm{e}^{t \mathbf{A}} \mathbf{BB}^T \mathrm{e}^{t \mathbf{A}^T} \mathbf{C}^T \right) \ \mathrm{d}t = \mathrm{trace} \left( \mathbf{C} \mathbf{W}_c \mathbf{C}^T \right) \\
+&amp; = \int_{0}^{\infty} \mathrm{trace} \left( \mathbf{B}^T \mathrm{e}^{t \mathbf{A}^T} \mathbf{C}^T \mathbf{C} \mathrm{e}^{t\mathbf{A}} \mathbf{B} \right) \ \mathrm{d}t = \mathrm{trace} \left( \mathbf{B}^T \mathbf{W}_o \mathbf{B} \right).
+\end{aligned}
+\]</span></p>
+<p>The <span class="math inline">\(\mathcal{H}_2\)</span> norm of a system thus relates explicitly the measurement matrix <span class="math inline">\(\mathbf{C}\)</span> and input-to-state matrix <span class="math inline">\(\mathbf{B}\)</span> to each of its gramians. An alternative to the average output energy metric are the volumetric measures given by</p>
+<p><span class="math display">\[
+\log\det \mathbf{C} \mathbf{W}_c \mathbf{C}^T \quad \text{and} \quad \log\det \mathbf{B}^T \mathbf{W}_o \mathbf{B},
+\]</span></p>
+<p>corresponding to the geoemtric mean of the axes of the ellipsoid skewed by <span class="math inline">\(\mathbf{B}\)</span> or <span class="math inline">\(\mathbf{C}\)</span>. In comparison, the trace used to defined the <span class="math inline">\(\mathcal{H}_2\)</span> norm corresponds to the arithmetic mean.</p>
+<p><strong>Optimal sensor and actuator selection using balanced model reduction –</strong> As baseline model, we consider the framework put forth by <span class="citation" data-cites="manohar_optimal_2022">Manohar, Kutz, and Brunton (<a href="#ref-manohar_optimal_2022" role="doc-biblioref">2022</a>)</span>, combining balanced truncation and greedy maximization of the <span class="math inline">\(\log\det\)</span> objective function corresponding to a D-optimal design strategy. Given the full-order LTI system</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dfrac{d \mathbf{x}}{dt} &amp; = \mathbf{Ax} + \mathbf{Bu} \\
+\mathbf{y} &amp; = \mathbf{Cx}
+\end{aligned}
+\]</span></p>
+<p>with <span class="math inline">\(\mathbf{x} \in \mathbb{R}^n\)</span> the (high-dimensional) state vector, they first compute the (truncated) balancing transformation <span class="math inline">\(\boldsymbol{\Psi}_r\)</span> and <span class="math inline">\(\boldsymbol{\Phi}_r\)</span> (either using the standard balanced truncation algorithm or BPOD). This step corresponds to a model order reduction assuming the system is fully actuated and sensed.</p>
+<p>In a second step, <span class="citation" data-cites="manohar_optimal_2022">Manohar, Kutz, and Brunton (<a href="#ref-manohar_optimal_2022" role="doc-biblioref">2022</a>)</span> proposed a greedy approach such that the <span class="math inline">\(\mathcal{H}_2\)</span> norm of the model gracefully degrades as we reduce the number of sensors and/or actuators. Denoting by <span class="math inline">\(\mathbb{S}_{C}\)</span> the sensor selection operator, they define it as being the solution to the following optimization problem</p>
+<p><span class="math display">\[
+\max_{\mathbb{S}_{C}} \quad \log\det \mathbb{S}_{C} \mathbf{C} \mathbf{W}_c \mathbf{C}^* \mathbb{S}_{C}^*
+\]</span></p>
+<p>Note that low-rank approximations of the gramians of the original system can be obtained as</p>
+<p><span class="math display">\[
+\mathbf{W}_c \simeq \boldsymbol{\Psi}_r \boldsymbol{\Sigma}_r \boldsymbol{\Psi}_r^* \quad \text{and} \quad \mathbf{W}_o \simeq \boldsymbol{\Phi}_r \boldsymbol{\Sigma}_r \boldsymbol{\Phi}_r^*.
+\]</span></p>
+<p>Introducing this ansatz into the optimization problem leads to</p>
+<p><span class="math display">\[
+\max_{\mathbb{S}_C} \quad \vert \det \left( \mathbb{S}_C \mathbf{C} \boldsymbol{\Psi}_r \right) \vert.
+\]</span></p>
+<p>A similar problem can be formulated for the actuator selection operator <span class="math inline">\(\mathbb{S}_B\)</span>. This problem remains a combinatorial problem. In order to approximately solve it, <span class="citation" data-cites="manohar_optimal_2022">Manohar, Kutz, and Brunton (<a href="#ref-manohar_optimal_2022" role="doc-biblioref">2022</a>)</span> rely on their prior works <span class="citation" data-cites="manohar_data-driven_2018">(<a href="#ref-manohar_data-driven_2018" role="doc-biblioref">Manohar et al. 2018</a>)</span> and suggest to greedily construct <span class="math inline">\(\mathbb{S}_C\)</span> by applying the pivoted QR decomposition to the matrix <span class="math inline">\(\left( \mathbf{C} \boldsymbol{\Psi}_r \right) ^*\)</span>. Their approach has been shown to scale favourably as the dimension <span class="math inline">\(n\)</span> of the full order system increases, while its performances are comparable to direct optimization of the <span class="math inline">\(\mathcal{H}_2\)</span> norm of the system <span class="citation" data-cites="chen_h2_2011">(<a href="#ref-chen_h2_2011" role="doc-biblioref">Chen and Rowley 2011</a>)</span>. Finally, while the authors considered mostly open-loop sensor and actuator placements, they have also illustrated how to extend their methodology to selection sensors and actuators for closed-loop systems.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Implementation details
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To the best of our knowledge, the code base developped by <span class="citation" data-cites="manohar_optimal_2022">Manohar, Kutz, and Brunton (<a href="#ref-manohar_optimal_2022" role="doc-biblioref">2022</a>)</span> is not available. Note however that the algorithm is incredibly simple as it relies on the pivoted QR decomposition. This matrix factorization is readily available in most scientific programming languages, including <code>MATLAB</code>, <code>SciPy</code>, <code>SciLab</code>, or <code>Octave</code> for instance. In the rest of this project, this baseline model will be re-implemented using the <code>Julia</code> programming language.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-numerics" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="sec-numerics"><span class="header-section-number">2.2</span> Theoretical framework and numerical tools</h3>
+<section id="sec-numerics-cca" class="level4" data-number="2.2.1">
+<h4 data-number="2.2.1" class="anchored" data-anchor-id="sec-numerics-cca"><span class="header-section-number">2.2.1</span> The fundamental equation of component analysis</h4>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Implementation in the <code>nekStab</code> library
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+</section>
+<section id="submodular-set-function-maximization" class="level4" data-number="2.2.2">
+<h4 data-number="2.2.2" class="anchored" data-anchor-id="submodular-set-function-maximization"><span class="header-section-number">2.2.2</span> Submodular set function maximization</h4>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The Julia package <code>SubmodularOpt.jl</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+</section>
+</section>
+<section id="sec-flowconf" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="sec-flowconf"><span class="header-section-number">2.3</span> Canonical flow configurations</h3>
+<section id="the-two-dimensional-bénard-von-kàrmàn-vortex-street" class="level4" data-number="2.3.1">
+<h4 data-number="2.3.1" class="anchored" data-anchor-id="the-two-dimensional-bénard-von-kàrmàn-vortex-street"><span class="header-section-number">2.3.1</span> The two-dimensional Bénard-von Kàrmàn vortex street</h4>
+</section>
+<section id="the-two-dimensional-shear-driven-cavity-flow" class="level4" data-number="2.3.2">
+<h4 data-number="2.3.2" class="anchored" data-anchor-id="the-two-dimensional-shear-driven-cavity-flow"><span class="header-section-number">2.3.2</span> The two-dimensional shear-driven cavity flow</h4>
+</section>
+</section>
+<section id="sec-conclusion" class="level3" data-number="2.4">
+<h3 data-number="2.4" class="anchored" data-anchor-id="sec-conclusion"><span class="header-section-number">2.4</span> Problems encountered and actions taken for scientific communication and dissemination</h3>
+<section id="human-ressources" class="level4" data-number="2.4.1">
+<h4 data-number="2.4.1" class="anchored" data-anchor-id="human-ressources"><span class="header-section-number">2.4.1</span> Human ressources</h4>
+<p><strong>Postdocotral researcher –</strong> Recruitment of the postdoctoral researcher was initially planned for the first quarter of 2023. Unfortunately, despite the numerous applications, no applicant had the sufficient background in numerical simulation, reduced-order modeling or linear dynamical system theory to ensure rapid progress of the project. Decision has been made to postpone this recruitment to Fall 2023. Doing so gave the opportunity to Simon Kern to join the project. Simon defended his Ph. D. work entitled <em>Linear and non-linear dynamics of non-autonomous flows</em> at the Royal Institute of Technology (KTH, Sweden) early June 2023 under the joint supervision of Ardeshir Hanifi and Dan Henningson. He will join us in September.</p>
+</section>
+<section id="scientific-communication-and-dissemination" class="level4" data-number="2.4.2">
+<h4 data-number="2.4.2" class="anchored" data-anchor-id="scientific-communication-and-dissemination"><span class="header-section-number">2.4.2</span> Scientific communication and dissemination</h4>
+<p>This section summarizes some of the actions taken for scientific communication and dissemination of the results related (work package WP5). So far, these actions are quite limited. This results from the delay in the recruitment of the postdoctoral researcher (initially expected to start during the first quarter of 2023 but effectively starting early september) and the fact the project itself only started a few months ago.</p>
+<section id="journal-articles" class="level5" data-number="2.4.2.1">
+<h5 data-number="2.4.2.1" class="anchored" data-anchor-id="journal-articles"><span class="header-section-number">2.4.2.1</span> Journal Articles</h5>
+<p>Although the project officially started only early January 2023, three papers are already in preparation. A brief overview of each is given below.</p>
+<p><strong>Unifying framework for data-driven linear modeling with rank constraints</strong></p>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Authors</strong></td>
+<td><a href="loiseaujc.github.io">J.-Ch. Loiseau</a> (Arts et Métiers, France) &amp; <a href="https://www.eigensteve.com/">S. L. Brunton</a> (UW, USA)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Tentative journal</strong></td>
+<td><a href="https://www.siam.org/publications/journals/siam-journal-on-applied-dynamical-systems-siads"><em>SIAM Journal on Applied Dynamical Systems</em></a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Expected submission date</strong></td>
+<td>Fall 2023</td>
+</tr>
+</tbody>
+</table>
+<p>As discussed in <a href="#sec-numerics-cca">Section&nbsp;2.2.1</a>, many data-driven linear modeling frameworks for high-dimensional systems can be recast as the following <em>reduced-rank regression</em> problem</p>
+<p><span class="math display">\[
+\begin{aligned}
+    \min &amp; \quad \dfrac12 \| \mathbf{M}^\frac12 \left( \mathbf{Y} - \mathbf{PQ}^T \mathbf{X} \right) \mathbf{W}^{\frac12} \|_F^2 \\
+    \mathrm{subject~to} &amp; \quad \mathrm{rank}(\mathbf{P}) = r.
+\end{aligned}
+\]</span></p>
+<p>This includes <em>Proper Orthogonal Decomposition</em> <span class="citation" data-cites="berkooz_proper_1993">(<a href="#ref-berkooz_proper_1993" role="doc-biblioref">Berkooz, Holmes, and Lumley 1993</a>)</span> for which <span class="math inline">\(\mathbf{X} = \mathbf{Y}\)</span> and <span class="math inline">\(\mathbf{M} = \mathbf{W} = \mathbf{I}\)</span>, <em>Dynamic Mode Decomposition</em> <span class="citation" data-cites="schmid_dynamic_2022">(<a href="#ref-schmid_dynamic_2022" role="doc-biblioref">Schmid 2022</a>)</span> where <span class="math inline">\(\mathbf{y}_t = \mathbf{x}_{t+1}\)</span>, or <em>Linear Stochastic Estimation</em> to name only the most popular in the fluid dynamics community. Likewise, numerous linear system identification techniques used in the control community can be derived from this rank-constrained optimization problem, e.g.&nbsp;<em>EigenRealization Algorithm</em> <span class="citation" data-cites="juang_eigensystem_1985">(<a href="#ref-juang_eigensystem_1985" role="doc-biblioref">Juang and Pappa 1985</a>)</span>, <em>N4SID</em> <span class="citation" data-cites="van_overschee_n4sid_1993">(<a href="#ref-van_overschee_n4sid_1993" role="doc-biblioref">Van Overschee and Moor 1993</a>)</span> or <em>Canonical Variate Analysis</em> <span class="citation" data-cites="larimore_system_1983">(<a href="#ref-larimore_system_1983" role="doc-biblioref">Larimore 1983</a>)</span>.</p>
+<p>This article delves into this <em>fundamental equation of component analysis</em>, its derivation and the proof of its solution, and illustrates how classical techniques in mechanical engineering and control systems can be derived from it as special cases. In the process, we show how the performances and robustness of DMD-like techniques can be improved by correctly formulating these problems into this framework. Moreover, as a consequence of these techniques being special instances of a more general problem, we can also draw parallels and connections between them. In particular, we elucidate the connection between the modes resulting from <em>Proper Orthogonal Decomposition</em> and those from <em>Dynamic Mode Decomposition</em>, a long standing and unsatisfactrily answered question in the fluid dynamics literature.</p>
+<p><strong><code>SubmodularOpt.jl</code> : a Julia package for greedy maximization of submodular set functions</strong></p>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Author</strong></td>
+<td style="text-align: left;"><a href="loiseaujc.github.io">J.-Ch. Loiseau</a> (Arts et Métiers, France)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Tentative journal</strong></td>
+<td style="text-align: left;"><a href="https://joss.theoj.org/"><em>Journal of Open Source Softwares</em></a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Expected submission date</strong></td>
+<td style="text-align: left;">Fall 2023</td>
+</tr>
+</tbody>
+</table>
+<p><code>SubmodularOpt.jl</code> is one of the main packages of this project. It is being openly developped using <a href="github.com">GitHub</a>. This journal article, to be submitted to the <a href="https://joss.theoj.org/">Journal of Open Source Softwares</a>, presents its core components as well as an example of sensor placement problem it can solve. Following the FAIR principles (Free, Accessible, Inclusive, Reproducible) for open and reproducible science, the corresponding release of <code>SubmodularOpt.jl</code> will be archived for long-term preservation on platforms such as Zenodo, granting it with a citable DOI.</p>
+</section>
+<section id="conferences-and-seminars" class="level5" data-number="2.4.2.2">
+<h5 data-number="2.4.2.2" class="anchored" data-anchor-id="conferences-and-seminars"><span class="header-section-number">2.4.2.2</span> Conferences and Seminars</h5>
+<p>Since <strong>CONMAN</strong> started only six months ago, members of the project did not have the occasion (yet) to present their work in conferences. Plans are being made however to send two contributions to the <a href="https://www.2023apsdfd.org/">APD Division of Fluid Dynamics 76th Annual Meeting</a> to be held in Washington DC, USA late November 2023. These contributions include:</p>
+<ul>
+<li><em>A unifying framework for data-driven linear modeling with rank constraints.</em> <strong>J.-Ch. Loiseau</strong> and S. L. Brunton.</li>
+<li><em>D-optimal sensor placement with submodular optimization.</em> <strong>J.-Ch. Loiseau</strong>.</li>
+</ul>
+<p>Additionally, two seminars in French research laboratories are currently planned for Fall 2023:</p>
+<ul>
+<li><em>Tips and tricks for Koopman analysis.</em> <strong>J.-Ch. Loiseau</strong>. ENSTA Paris, institut Polytechnique de Paris, France.</li>
+<li><em>Data-driven reduced-order modeling.</em> <strong>J-Ch. Loiseau</strong>. Laboratoire de Physique, ENS Lyon, France.</li>
+</ul>
+<p>As the project continues, great care will be taken to provide the postdoctoral research and Ph. D. candidate with opportunities to present their works at international conferences and seminars.</p>
+</section>
+</section>
+</section>
+<section id="sec-next" class="level3" data-number="2.5">
+<h3 data-number="2.5" class="anchored" data-anchor-id="sec-next"><span class="header-section-number">2.5</span> What’s next?</h3>
+<p>During the next period (July-December 2023), efforts will be focused on wrapping up the implementations of the baseline models in our different libraries. A particular attention will be devoted to <em>validation &amp; verification</em> of the results for these baseline models as well as to their <em>reproducibility</em>. This includes:</p>
+<ul>
+<li>Validation and verification of the BPOD implementation in <code>nekStab</code> against applications available in the literature.</li>
+<li>Setting up the continuous integration feature for all the packages developed on GitHub.</li>
+<li>Designing informative unit tests for all the packages to minimize the chances of an unwanted behaviour slipping in.</li>
+<li>Setting up our <em>reproducibility pipeline</em> for results presented in journal articles using the <a href="https://quarto.org/">Quarto</a> publishing system and <a href="https://github.com/showyourwork/showyourwork">showyourwork</a>.</li>
+</ul>
+<p>From a purely scientific point of view, we expect the following:</p>
+<ul>
+<li>Putting the final piece to the unifying framework for data-driven linear modeling with rank constraint, including publication of the journal article.</li>
+<li>Formalising the proof of the submodularity (or submodular relaxation) of the sensor/actuator placement problem, both in the open-loop and closed-loop setups.</li>
+<li>Obtaining the first benchmark results for the submodular sensor placement vs.&nbsp;the approach proposed by <span class="citation" data-cites="manohar_optimal_2022">Manohar, Kutz, and Brunton (<a href="#ref-manohar_optimal_2022" role="doc-biblioref">2022</a>)</span> on the linearized Ginzburg-Landau equation.</li>
+</ul>
+<p>It needs to be emphasized finally that a large portion of the time of J.-Ch. Loiseau will be dedicated to the education of the Ph. D. candidate arriving early Fall 2023. This includes familiarizing the Ph. D. candidate with both the theoretical and numerical tools on which this project relies as well as to the French Higher Education and Research ecosystem.</p>
+</section>
+</section>
+<section id="bibliography" class="level2 unnumbered">
+
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">Bibliography</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-antoulas_approximation_2005" class="csl-entry" role="listitem">
+Antoulas, Athanasios C. 2005. <em>Approximation of <span>Large</span>-<span>Scale</span> <span>Dynamical</span> <span>Systems</span></em>. Advances in <span>Design</span> and <span>Control</span>. Society for Industrial; Applied Mathematics. <a href="https://doi.org/10.1137/1.9780898718713">https://doi.org/10.1137/1.9780898718713</a>.
+</div>
+<div id="ref-berkooz_proper_1993" class="csl-entry" role="listitem">
+Berkooz, Gal, Philip Holmes, and John L Lumley. 1993. <span>“The Proper Orthogonal Decomposition in the Analysis of Turbulent Flows.”</span> <em>Annual Review of Fluid Mechanics</em> 25 (1): 539–75.
+</div>
+<div id="ref-burns_optimal_2021" class="csl-entry" role="listitem">
+Burns, John A., and Terry L. Herdman. 2021. <span>“Optimal <span>Sensor</span> <span>Placement</span> for <span>Observer</span> <span>Design</span>.”</span> <em>IFAC-PapersOnLine</em>, 24th <span>International</span> <span>Symposium</span> on <span>Mathematical</span> <span>Theory</span> of <span>Networks</span> and <span>Systems</span> <span>MTNS</span> 2020, 54 (9): 446–51. <a href="https://doi.org/10.1016/j.ifacol.2021.06.102">https://doi.org/10.1016/j.ifacol.2021.06.102</a>.
+</div>
+<div id="ref-chen_h2_2011" class="csl-entry" role="listitem">
+Chen, Kevin K., and Clarence W. Rowley. 2011. <span>“H2 Optimal Actuator and Sensor Placement in the Linearised Complex <span>Ginzburg</span>–<span>Landau</span> System.”</span> <em>Journal of Fluid Mechanics</em> 681 (August): 241–60. <a href="https://doi.org/10.1017/jfm.2011.195">https://doi.org/10.1017/jfm.2011.195</a>.
+</div>
+<div id="ref-drmac_new_2016" class="csl-entry" role="listitem">
+Drmac, Zlatko, and Serkan Gugercin. 2016. <span>“A <span>New</span> <span>Selection</span> <span>Operator</span> for the <span>Discrete</span> <span>Empirical</span> <span>Interpolation</span> <span>Method</span> – Improved a Priori Error Bound and Extensions.”</span> <em>SIAM J. Sci. Comput.</em> 38 (2): A631–48. <a href="https://doi.org/10.1137/15M1019271">https://doi.org/10.1137/15M1019271</a>.
+</div>
+<div id="ref-juang_eigensystem_1985" class="csl-entry" role="listitem">
+Juang, Jer-Nan, and Richard S. Pappa. 1985. <span>“An Eigensystem Realization Algorithm for Modal Parameter Identification and Model Reduction.”</span> <em>Journal of Guidance, Control, and Dynamics</em> 8 (5): 620–27. <a href="https://doi.org/10.2514/3.20031">https://doi.org/10.2514/3.20031</a>.
+</div>
+<div id="ref-larimore_system_1983" class="csl-entry" role="listitem">
+Larimore, Wallace E. 1983. <span>“System <span>Identification</span>, <span>Reduced</span>-<span>Order</span> <span>Filtering</span> and <span>Modeling</span> via <span>Canonical</span> <span>Variate</span> <span>Analysis</span>.”</span> In <em>1983 <span>American</span> <span>Control</span> <span>Conference</span></em>, 445–51. <a href="https://doi.org/10.23919/ACC.1983.4788156">https://doi.org/10.23919/ACC.1983.4788156</a>.
+</div>
+<div id="ref-manohar_data-driven_2018" class="csl-entry" role="listitem">
+Manohar, Krithika, Bingni W. Brunton, J. Nathan Kutz, and Steven L. Brunton. 2018. <span>“Data-<span>Driven</span> <span>Sparse</span> <span>Sensor</span> <span>Placement</span> for <span>Reconstruction</span>: <span>Demonstrating</span> the <span>Benefits</span> of <span>Exploiting</span> <span>Known</span> <span>Patterns</span>.”</span> <em>IEEE Control Systems Magazine</em> 38 (3): 63–86. <a href="https://doi.org/10.1109/MCS.2018.2810460">https://doi.org/10.1109/MCS.2018.2810460</a>.
+</div>
+<div id="ref-manohar_optimal_2022" class="csl-entry" role="listitem">
+Manohar, Krithika, J. Nathan Kutz, and Steven L. Brunton. 2022. <span>“Optimal <span>Sensor</span> and <span>Actuator</span> <span>Selection</span> <span>Using</span> <span>Balanced</span> <span>Model</span> <span>Reduction</span>.”</span> <em>IEEE Trans. Automat. Contr.</em> 67 (4): 2108–15. <a href="https://doi.org/10.1109/TAC.2021.3082502">https://doi.org/10.1109/TAC.2021.3082502</a>.
+</div>
+<div id="ref-moore_principal_1981" class="csl-entry" role="listitem">
+Moore, B. 1981. <span>“Principal Component Analysis in Linear Systems: <span>Controllability</span>, Observability, and Model Reduction.”</span> <em>IEEE Transactions on Automatic Control</em> 26 (1): 17–32. <a href="https://doi.org/10.1109/TAC.1981.1102568">https://doi.org/10.1109/TAC.1981.1102568</a>.
+</div>
+<div id="ref-rowley_model_2005" class="csl-entry" role="listitem">
+Rowley, C. W. 2005. <span>“Model Reduction for Fluids, Using Balanced Proper Orthogonal Decomposition.”</span> <em>Int. J. Bifurcation Chaos</em> 15 (03): 997–1013. <a href="https://doi.org/10.1142/S0218127405012429">https://doi.org/10.1142/S0218127405012429</a>.
+</div>
+<div id="ref-schmid_dynamic_2022" class="csl-entry" role="listitem">
+Schmid, Peter J. 2022. <span>“Dynamic <span>Mode</span> <span>Decomposition</span> and <span>Its</span> <span>Variants</span>.”</span> <em>Annual Review of Fluid Mechanics</em> 54 (1): 225–54. <a href="https://doi.org/10.1146/annurev-fluid-030121-015835">https://doi.org/10.1146/annurev-fluid-030121-015835</a>.
+</div>
+<div id="ref-van_overschee_n4sid_1993" class="csl-entry" role="listitem">
+Van Overschee, P., and B. de Moor. 1993. <span>“<span>N4SID</span>: <span>Numerical</span> <span>Algorithms</span> for <span>State</span> <span>Space</span> <span>Subspace</span> <span>System</span> <span>Identification</span>.”</span> <em>IFAC Proceedings Volumes</em>, 12th <span>Triennal</span> <span>Wold</span> <span>Congress</span> of the <span>International</span> <span>Federation</span> of <span>Automatic</span> control. <span>Volume</span> 5 <span>Associated</span> <span>Technologies</span> and <span>Recent</span> <span>Developments</span>, <span>Sydney</span>, <span>Australia</span>, 18-23 <span>July</span>, 26 (2, Part 5): 55–58. <a href="https://doi.org/10.1016/S1474-6670(17)48221-8">https://doi.org/10.1016/S1474-6670(17)48221-8</a>.
+</div>
+<div id="ref-willcox_unsteady_2006" class="csl-entry" role="listitem">
+Willcox, K. 2006. <span>“Unsteady Flow Sensing and Estimation via the Gappy Proper Orthogonal Decomposition.”</span> <em>Computers &amp; Fluids</em> 35 (2): 208–26. <a href="https://doi.org/10.1016/j.compfluid.2004.11.006">https://doi.org/10.1016/j.compfluid.2004.11.006</a>.
+</div>
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <img src="https://iris.anr.fr/img/ANR-LOGO-NOIR.png" width="256px" img="">
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <img src="https://assets.ensam.eu/logo/en/logo-trans-322x84.png" width="192px" img="">
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <img src="https://www.ic-arts.eu/wp-content/uploads/2018/05/logo-DynFluid.png" width="192px" img="">
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ANR CONMAN – Data-driven CONtrol and MANifold Interpolation - Roadmap</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title"><strong>ANR CONMAN</strong> – Data-driven <strong>CON</strong>trol and <strong>MAN</strong>ifold Interpolation</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./roadmap.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Roadmap</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./softwares.html" rel="" target="">
+ <span class="menu-text">Softwares</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./scientific_production.html" rel="" target="">
+ <span class="menu-text">Scientific Production</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#work-packages" id="toc-work-packages" class="nav-link active" data-scroll-target="#work-packages">Work Packages</a>
+  <ul class="collapse">
+  <li><a href="#work-package-1-baseline-models" id="toc-work-package-1-baseline-models" class="nav-link" data-scroll-target="#work-package-1-baseline-models">Work Package #1 – Baseline models</a></li>
+  <li><a href="#work-package-2-data-driven-linear-modeling" id="toc-work-package-2-data-driven-linear-modeling" class="nav-link" data-scroll-target="#work-package-2-data-driven-linear-modeling">Work Package #2 – Data-driven linear modeling</a></li>
+  <li><a href="#work-package-3-parameterization-and-interpolation-on-the-grassman-and-stiefel-manifolds" id="toc-work-package-3-parameterization-and-interpolation-on-the-grassman-and-stiefel-manifolds" class="nav-link" data-scroll-target="#work-package-3-parameterization-and-interpolation-on-the-grassman-and-stiefel-manifolds">Work Package #3 – Parameterization and interpolation on the Grassman and Stiefel manifolds</a></li>
+  <li><a href="#work-package-4-sensitivity-uncertainty-quantification-and-applications" id="toc-work-package-4-sensitivity-uncertainty-quantification-and-applications" class="nav-link" data-scroll-target="#work-package-4-sensitivity-uncertainty-quantification-and-applications">Work Package #4 – Sensitivity, uncertainty quantification, and applications</a></li>
+  </ul></li>
+  <li><a href="#deliverables" id="toc-deliverables" class="nav-link" data-scroll-target="#deliverables">Deliverables</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Roadmap</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="work-packages" class="level2">
+<h2 class="anchored" data-anchor-id="work-packages">Work Packages</h2>
+<section id="work-package-1-baseline-models" class="level3">
+<h3 class="anchored" data-anchor-id="work-package-1-baseline-models">Work Package #1 – Baseline models</h3>
+<p>The parameterization strategy proposed in this research project applies to a wide range of linear models. Our main focus is however on control-oriented data-driven models. To assess the performances and robustness of these models, reference data must obtained. Running over the first year of the project, this WP deals with the implementation of state-of-the-art linear methods for flow control. These developments will mostly happen in <code>nekStab</code>, an open-source toolbox for large-scale stability and bifurcation analysis of incompressible flows. Relying on the spectral element solver <code>Nek5000</code>, this library is being developed by the principal investigator. Of interest for this work package are <code>Nek5000</code>’s capabilities in solving the direct and adjoint linearized Navier-Stokes equations and the coupling with <code>nekStab</code>’s large-scale eigenvalue and singular value solvers.</p>
+<p>Consider a multiple-input multiple output linear time-invariant (MIMO LTI) system</p>
+<p><span class="math display">\[
+\Sigma
+=
+\begin{pmatrix}
+\begin{array}{c|c}
+\mathbf{A} &amp; \mathbf{B} \\
+\hline
+\mathbf{C}
+\end{array}
+\end{pmatrix}
+\]</span></p>
+<p>with <span class="math inline">\(\mathbf{x} \in \mathbb{R}^n\)</span> being the state vector of the system, <span class="math inline">\(\mathbf{u} \in \mathbb{R}^p\)</span> its inputs, and <span class="math inline">\(\mathbf{y} \in \mathbb{R}^q\)</span> its outputs. A feedback control law of the form <span class="math inline">\(\mathbf{u} = - \mathbf{Kx}\)</span> can stabilize the otherwise unstable dynamics. For <em>linear quadratic regulators</em> (resp. <em>linear quadratic estimators</em>), synthesizing <span class="math inline">\(\mathbf{K} \in \mathbb{R}^{n \times p}\)</span> (resp. <span class="math inline">\(\mathbf{L} \in \mathbb{R}^{n \times q}\)</span>) requires the solution of an algebraic Ricatti equation. Due to the sheer size of the discretizations in fluid dynamics, this is however computationally intractable even for moderately complex flow configurations. Two main strategies have been proposed in the literature to overcome these limitations, including <em>Balanced Proper Orthgonal Decomposition</em> <span class="citation" data-cites="rowley_model_2005">(<a href="#ref-rowley_model_2005" role="doc-biblioref">Rowley 2005</a>)</span>, the <em>Adjoint of the Direct-Adjoint</em> and <em>Adjoint of the Adjoint-Direct</em> <span class="citation" data-cites="bewley_methods_2016 semeraro_full-order_2018">(<a href="#ref-bewley_methods_2016" role="doc-biblioref">Bewley, Luchini, and Pralits 2016</a>; <a href="#ref-semeraro_full-order_2018" role="doc-biblioref">Semeraro and Pralits 2018</a>)</span>. The implementation of these strategies, both in sandboxes and in <code>nekStab</code>, forms the main tasks of this work package.</p>
+<section id="task-1.1-adjoint-of-the-direct-adjoint-ada" class="level4">
+<h4 class="anchored" data-anchor-id="task-1.1-adjoint-of-the-direct-adjoint-ada">Task 1.1 – Adjoint of the direct-adjoint (ADA)</h4>
+<ul class="task-list">
+<li><input type="checkbox"><strong>ADA in Julia/Python for prototyping</strong>
+<ul class="task-list">
+<li><input type="checkbox">Implement ADA for the Ginzburg-Landau equation.</li>
+<li><input type="checkbox">Implement classic LQR for the sake of reference.</li>
+<li><input type="checkbox">Validate/benchmark the two approaches against one another.</li>
+</ul></li>
+<li><input type="checkbox"><strong>ADA in <code>nekStab</code></strong>
+<ul class="task-list">
+<li><input type="checkbox">Implement ADA for the hydrodynamic equations only.</li>
+<li><input type="checkbox">Validate the implementation based on
+<ul class="task-list">
+<li><input type="checkbox">Plane Poiseuille flow</li>
+<li><input type="checkbox">Shear-driven cavity flow</li>
+<li><input type="checkbox">Cylinder flow</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="task-1.2-adjoint-of-the-adjoint-direct-aad" class="level4">
+<h4 class="anchored" data-anchor-id="task-1.2-adjoint-of-the-adjoint-direct-aad">Task 1.2 – Adjoint of the adjoint-direct (AAD)</h4>
+<ul class="task-list">
+<li><input type="checkbox"><strong>AAD in Julia/Python for prototyping</strong>
+<ul class="task-list">
+<li><input type="checkbox">Implement AAD for the Ginzburg-Landau equation.</li>
+<li><input type="checkbox">Implement classic LQE for the sake of reference.</li>
+<li><input type="checkbox">Validate/benchmark the two approaches against one another.</li>
+</ul></li>
+<li><input type="checkbox"><strong>AAD in <code>nekStab</code></strong>
+<ul class="task-list">
+<li><input type="checkbox">Implement AAD for the hydrodynamic equations only.</li>
+<li><input type="checkbox">Validate the implementation based on
+<ul class="task-list">
+<li><input type="checkbox">Plane Poiseuille flow</li>
+<li><input type="checkbox">Shear-driven cavity flow</li>
+<li><input type="checkbox">Cylinder flow</li>
+</ul></li>
+</ul></li>
+<li><input type="checkbox"><strong>Combine AAD and ADA for LQG control</strong>
+<ul class="task-list">
+<li><input type="checkbox">Validate the combined approach for closed-look feedback control.
+<ul class="task-list">
+<li><input type="checkbox">State feedback:
+<ul class="task-list">
+<li><input type="checkbox">Plane Poiseuille flow</li>
+</ul></li>
+<li><input type="checkbox">Output feedback:
+<ul class="task-list">
+<li><input type="checkbox">Shear-driven cavity flow</li>
+<li><input type="checkbox">Cylinder flow</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="task-1.3-balanced-proper-orthogonal-decomposition-bpod" class="level4">
+<h4 class="anchored" data-anchor-id="task-1.3-balanced-proper-orthogonal-decomposition-bpod">Task 1.3 – Balanced Proper Orthogonal Decomposition (BPOD)</h4>
+<ul class="task-list">
+<li><input type="checkbox"><strong>Implementation of BPOD in <code>nekStab</code></strong>
+<ul class="task-list">
+<li><input type="checkbox">Impulse response of the direct system.</li>
+<li><input type="checkbox">Impulse response of the adjoint system.</li>
+<li><input type="checkbox">Singular Value Decomposition of the cross Gramian.</li>
+<li><input type="checkbox">Petrov-Galerkin projection of the linearized operator.</li>
+<li><input type="checkbox">Output of the reduced-order model in a <code>Julia</code> compatible format.</li>
+</ul></li>
+<li><input type="checkbox"><strong>Validation of the implementation</strong>
+<ul class="task-list">
+<li><input type="checkbox">Plane Poiseuille flow</li>
+<li><input type="checkbox">Shear-driven cavity flow</li>
+<li><input type="checkbox">Cylinder flow</li>
+</ul></li>
+</ul>
+</section>
+<section id="task-1.4-optimal-sensor-and-actuator-placement" class="level4">
+<h4 class="anchored" data-anchor-id="task-1.4-optimal-sensor-and-actuator-placement">Task 1.4 – Optimal sensor and actuator placement</h4>
+<ul class="task-list">
+<li><input type="checkbox"><strong>Sandbox implementation of the <span class="math inline">\(\mathcal{H}_2\)</span> optimal sensor and actuator placement</strong>
+<ul class="task-list">
+<li><input type="checkbox">Ginzburg-Landau sandbox with standard solvers.
+<ul class="task-list">
+<li><input type="checkbox">Linearized operator in matrix form.</li>
+<li><input type="checkbox">Adjoint operator in matrix form.</li>
+<li><input type="checkbox">Ricatti and Lyapunov direct solvers.</li>
+<li><input type="checkbox">Generic optimization loop.</li>
+</ul></li>
+<li><input type="checkbox">Ginzburg-Laudau sandbox with time-stepper formulation.
+<ul class="task-list">
+<li><input type="checkbox">LQR implementation based on ADA.</li>
+<li><input type="checkbox">LQE implementation based on AAD.</li>
+<li><input type="checkbox">Generic optimization loop.</li>
+</ul></li>
+<li><input type="checkbox">Benchmark the two approaches with a variety of optimizers.</li>
+</ul></li>
+<li><input type="checkbox"><strong><span class="math inline">\(\mathcal{H}_2\)</span> optimal sensor/actuator placement in <code>nekStab</code></strong>
+<ul class="task-list">
+<li><input type="checkbox">LQR implementation based on ADA.</li>
+<li><input type="checkbox">LQE implementation based on AAD.</li>
+<li><input type="checkbox">Optimizer.</li>
+</ul></li>
+<li><input type="checkbox"><strong>Submodular sensor/actuator placement</strong>
+<ul class="task-list">
+<li><input type="checkbox">Implement standard algorithms in <code>SubmodularOpt.jl</code>.</li>
+<li><input type="checkbox">Benchmark submodular sensor placement vs.&nbsp;<span class="math inline">\(\mathcal{H}_2\)</span> optimal vs.&nbsp;Manohar et al.&nbsp;on the Ginzburg-Landau equation.</li>
+<li><input type="checkbox">Couple <code>SubmodularOpt.jl</code> and <code>nekStab</code> for sensor/actuator placement of high-dimensional systems.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="work-package-2-data-driven-linear-modeling" class="level3">
+<h3 class="anchored" data-anchor-id="work-package-2-data-driven-linear-modeling">Work Package #2 – Data-driven linear modeling</h3>
+<section id="task-2.1-unifying-framework-for-data-driven-linear-modeling" class="level4">
+<h4 class="anchored" data-anchor-id="task-2.1-unifying-framework-for-data-driven-linear-modeling">Task 2.1 – Unifying framework for data-driven linear modeling</h4>
+<ul class="task-list">
+<li><input type="checkbox">Literature review on data-driven linear models.</li>
+<li><input type="checkbox">Unification of the most important modeling techniques
+<ul class="task-list">
+<li><input type="checkbox" checked="">POD</li>
+<li><input type="checkbox" checked="">DMD, DMDc, ioDMD</li>
+<li><input type="checkbox" checked="">ERA, N4SID, MOESP, CVA</li>
+<li><input type="checkbox">BPOD</li>
+<li><input type="checkbox" checked="">Linear Stochastic Estimation</li>
+<li><input type="checkbox">Extended DMD, Kernel DMD</li>
+</ul></li>
+</ul>
+</section>
+<section id="task-2.2-implementation-in-nekstab-development-of-an-external-oss-toolbox" class="level4">
+<h4 class="anchored" data-anchor-id="task-2.2-implementation-in-nekstab-development-of-an-external-oss-toolbox">Task 2.2 – Implementation in <code>nekStab</code> + development of an external OSS toolbox</h4>
+</section>
+<section id="task-2.3-benchmarking-data-driven-models" class="level4">
+<h4 class="anchored" data-anchor-id="task-2.3-benchmarking-data-driven-models">Task 2.3 – Benchmarking data-driven models</h4>
+<ul class="task-list">
+<li><input type="checkbox">Identify the most relevent benchmarks from the literature review.</li>
+<li><input type="checkbox">Sandbox implementation of the identified benchmarks.</li>
+<li><input type="checkbox">Exhaustive comparison of the performances of vanilla vs.&nbsp;RRR reformulations
+<ul class="task-list">
+<li><input type="checkbox" checked="">POD</li>
+<li><input type="checkbox">DMD, KMD</li>
+<li><input type="checkbox">DMDc, ioDMD</li>
+<li><input type="checkbox">ERA, N4SID, MOESP, CVA</li>
+<li><input type="checkbox">Extended DMD, Kernel DMD</li>
+<li><input type="checkbox">LSE, CCA</li>
+</ul></li>
+</ul>
+</section>
+<section id="task-2.4-data-driven-optimal-sensors-and-actuators-placement" class="level4">
+<h4 class="anchored" data-anchor-id="task-2.4-data-driven-optimal-sensors-and-actuators-placement">Task 2.4 – Data-driven optimal sensors and actuators placement</h4>
+</section>
+</section>
+<section id="work-package-3-parameterization-and-interpolation-on-the-grassman-and-stiefel-manifolds" class="level3">
+<h3 class="anchored" data-anchor-id="work-package-3-parameterization-and-interpolation-on-the-grassman-and-stiefel-manifolds">Work Package #3 – Parameterization and interpolation on the Grassman and Stiefel manifolds</h3>
+<section id="task-3.1-parameterization-of-bpod-on-the-grassman-manifold" class="level4">
+<h4 class="anchored" data-anchor-id="task-3.1-parameterization-of-bpod-on-the-grassman-manifold">Task 3.1 – Parameterization of BPOD on the Grassman manifold</h4>
+<ul class="task-list">
+<li><input type="checkbox">Literature review on the different sampling strategies for matrix-valued manifolds.</li>
+<li><input type="checkbox">Parameterization of the BPOD subspaces vs.&nbsp;direct parameterization of the cross gramian matrix.</li>
+<li><input type="checkbox"><em>a priori</em> and <em>a posteriori</em> error estimates for the <span class="math inline">\(\mathcal{H}_2\)</span> norm of the interpolated model.</li>
+<li><input type="checkbox">Benchmark the performances of the interpolated models against their ground truth counterparts
+<ul class="task-list">
+<li><input type="checkbox">Sandbox implementation on the Ginzburg-Landau equation.</li>
+<li><input type="checkbox">Using <code>nekStab</code>:
+<ul class="task-list">
+<li><input type="checkbox">Plane Poiseuille flow</li>
+<li><input type="checkbox">Cylinder flow</li>
+<li><input type="checkbox">Shear-driven cavity flow</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="task-3.2-parameterization-of-ada-and-aad-on-the-stiefel-manifold" class="level4">
+<h4 class="anchored" data-anchor-id="task-3.2-parameterization-of-ada-and-aad-on-the-stiefel-manifold">Task 3.2 – Parameterization of ADA and AAD on the Stiefel manifold</h4>
+</section>
+<section id="task-3.3-parameterization-of-data-driven-models-on-the-stiefel-manifold" class="level4">
+<h4 class="anchored" data-anchor-id="task-3.3-parameterization-of-data-driven-models-on-the-stiefel-manifold">Task 3.3 – Parameterization of data-driven models on the Stiefel manifold</h4>
+</section>
+</section>
+<section id="work-package-4-sensitivity-uncertainty-quantification-and-applications" class="level3">
+<h3 class="anchored" data-anchor-id="work-package-4-sensitivity-uncertainty-quantification-and-applications">Work Package #4 – Sensitivity, uncertainty quantification, and applications</h3>
+<section id="task-4.1-sensitivity-of-data-driven-models-to-varying-parameters" class="level4">
+<h4 class="anchored" data-anchor-id="task-4.1-sensitivity-of-data-driven-models-to-varying-parameters">Task 4.1 – Sensitivity of data-driven models to varying parameters</h4>
+</section>
+<section id="task-4.2-uncertainty-quantification-on-the-stiefel-manifold" class="level4">
+<h4 class="anchored" data-anchor-id="task-4.2-uncertainty-quantification-on-the-stiefel-manifold">Task 4.2 – Uncertainty quantification on the Stiefel manifold</h4>
+</section>
+<section id="task-4.3-application-to-a-fully-three-dimensional-flow-configuration" class="level4">
+<h4 class="anchored" data-anchor-id="task-4.3-application-to-a-fully-three-dimensional-flow-configuration">Task 4.3 – Application to a fully three-dimensional flow configuration</h4>
+</section>
+</section>
+</section>
+<section id="deliverables" class="level2">
+<h2 class="anchored" data-anchor-id="deliverables">Deliverables</h2>
+<ul class="task-list">
+<li><input type="checkbox" checked="">D0.1 Progress report (01/2023 - 06/2023)</li>
+<li><input type="checkbox">D0.2 Progress report (07/2023 - 12/2023)</li>
+<li><input type="checkbox">D0.3 Progress report (01/2024 - 06/2024)</li>
+<li><input type="checkbox">D0.4 Progress report (07/2024 - 12/2024)</li>
+<li><input type="checkbox">D0.5 Progress report (01/2025 - 06/2025)</li>
+<li><input type="checkbox">D0.6 Progress report (07/2025 - 12/2025)</li>
+<li><input type="checkbox">D0.7 Progress report (01/2026 - 06/2026)</li>
+<li><input type="checkbox">D0.8 Final report</li>
+</ul>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-bewley_methods_2016" class="csl-entry" role="listitem">
+Bewley, Thomas, Paolo Luchini, and Jan Pralits. 2016. <span>“Methods for Solution of Large Optimal Control Problems That Bypass Open-Loop Model Reduction.”</span> <em>Meccanica</em> 51 (12): 2997–3014. <a href="https://doi.org/10.1007/s11012-016-0547-3">https://doi.org/10.1007/s11012-016-0547-3</a>.
+</div>
+<div id="ref-rowley_model_2005" class="csl-entry" role="listitem">
+Rowley, C. W. 2005. <span>“Model Reduction for Fluids, Using Balanced Proper Orthogonal Decomposition.”</span> <em>Int. J. Bifurcation Chaos</em> 15 (03): 997–1013. <a href="https://doi.org/10.1142/S0218127405012429">https://doi.org/10.1142/S0218127405012429</a>.
+</div>
+<div id="ref-semeraro_full-order_2018" class="csl-entry" role="listitem">
+Semeraro, Onofrio, and Jan O. Pralits. 2018. <span>“Full-Order Optimal Compensators for Flow Control: The Multiple Inputs Case.”</span> <em>Theor. Comput. Fluid Dyn.</em> 32 (3): 285–305. <a href="https://doi.org/10.1007/s00162-018-0454-4">https://doi.org/10.1007/s00162-018-0454-4</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <img src="https://iris.anr.fr/img/ANR-LOGO-NOIR.png" width="256px" img="">
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <img src="https://assets.ensam.eu/logo/en/logo-trans-322x84.png" width="192px" img="">
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <img src="https://www.ic-arts.eu/wp-content/uploads/2018/05/logo-DynFluid.png" width="192px" img="">
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
