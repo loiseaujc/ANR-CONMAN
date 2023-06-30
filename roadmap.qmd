@@ -3,6 +3,13 @@ title: "Roadmap"
 bibliography: bibliography.bib
 ---
 
+::: {.callout-note appearance="simple"}
+### Work in Progress
+
+This page is still under construction.
+
+:::
+
 ## Work Packages
 
 ### Work Package #1 -- Baseline models
@@ -106,6 +113,12 @@ The implementation of these strategies, both in sandboxes and in `nekStab`, form
 
 ### Work Package #2 -- Data-driven linear modeling
 
+This second work package forms one of the main contributions of this project.
+It covers most of the first year of the Ph. D. candidate.
+Given two sets of data $\mathbf{X} \in \mathbb{R}^{n \times k}$ and $\mathbf{Y} \in \mathbb{R}^{m \times k}$, many data-driven linear models can be formulated as a reduced-rank regression problem.
+Of particular interest here is that many linear system identification techniques can be cast into this framework, e.g. DMD [@schmid_dynamic_2010], DMDc [@proctor_dynamic_2016], ioDMD[@benner_reduced_2018], ERA [@juang_eigensystem_1985], or N4SID [@van_overschee_n4sid_1993].
+The core of this work package is thus unification of all of these approaches under the umbrella of reduced-rank regression and benchmarking the resulting performances against classical algorithms or heuristics used in the literature for the related tasks.
+
 #### Task 2.1 -- Unifying framework for data-driven linear modeling
 
 - [ ] Literature review on data-driven linear models.
@@ -135,6 +148,23 @@ The implementation of these strategies, both in sandboxes and in `nekStab`, form
 
 ### Work Package #3 -- Parameterization and interpolation on the Grassman and Stiefel manifolds
 
+This third work package constitutes the major contribution of this project: the parameterization of data-driven models with respect to the operating conditions.
+For simplicity, parameterization with respect to a single parameter will be considered, albeit the proposed methodology is more general.
+Given training data ate different operating conditions, a data-driven linear model can be identified for each sampled point in the parameter space using the methodology developed in WP2.
+Yet, interpolating the models matrices in an entry wise fashion for a new operating condition cannot be used as it would not preserve the underlying low-rank structure of the problem.
+This structured interpolation needs to take place on a particular matrix manifold, either the Grassman or Stiefel manifold.
+Because they are Riemannian manifolds, both are equipped with an intrinsic notion of distance.
+
+This work package aims at exploring the possibility to use the tools from differential geometry to obtain parameterized data-driven linear models.
+Our attention will be focused on two particular points:
+
+1. How to sample properly the parameter space for the particular problem of control-oriented models?
+2. Defining *a priori* and *a posteriori* error estimates of the interpolated models.
+
+As for WP2, the performances of the parameterized data-driven models will be benchmarked and compared against those of the high-fidelity models.
+The differnt algorithms for the parametrization will be implemented in an open-source library.
+This work package mostly covers the third year of the project, corresponding to the second year of the Ph. D. thesis.
+
 #### Task 3.1 -- Parameterization of BPOD on the Grassman manifold
 
 - [ ] Literature review on the different sampling strategies for matrix-valued manifolds.
@@ -152,6 +182,11 @@ The implementation of these strategies, both in sandboxes and in `nekStab`, form
 #### Task 3.3 -- Parameterization of data-driven models on the Stiefel manifold
 
 ### Work Package #4 -- Sensitivity, uncertainty quantification, and applications
+
+Tasks included in this work package are quite prospective.
+An aspect often overlooked in data-driven models applied to fluid dynamics is their robustness and statistical significance.
+Assessing the prediction uncertainty is also critical, particularly for feedback control using an imperfect model.
+While techniques falling under the umbrella of *robust control* or *model predictive control* exist, a different route will be explored, combining ideas from sensitivity analysis and uncertainty quantification with statistics on the Stiefel manifold.
 
 #### Task 4.1 -- Sensitivity of data-driven models to varying parameters
 
