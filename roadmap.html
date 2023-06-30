@@ -168,6 +168,19 @@ div.csl-indent {
 
 </header>
 
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Work in Progress
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This page is still under construction.</p>
+</div>
+</div>
 <section id="work-packages" class="level2">
 <h2 class="anchored" data-anchor-id="work-packages">Work Packages</h2>
 <section id="work-package-1-baseline-models" class="level3">
@@ -299,6 +312,7 @@ div.csl-indent {
 </section>
 <section id="work-package-2-data-driven-linear-modeling" class="level3">
 <h3 class="anchored" data-anchor-id="work-package-2-data-driven-linear-modeling">Work Package #2 – Data-driven linear modeling</h3>
+<p>This second work package forms one of the main contributions of this project. It covers most of the first year of the Ph. D. candidate. Given two sets of data <span class="math inline">\(\mathbf{X} \in \mathbb{R}^{n \times k}\)</span> and <span class="math inline">\(\mathbf{Y} \in \mathbb{R}^{m \times k}\)</span>, many data-driven linear models can be formulated as a reduced-rank regression problem. Of particular interest here is that many linear system identification techniques can be cast into this framework, e.g.&nbsp;DMD <span class="citation" data-cites="schmid_dynamic_2010">(<a href="#ref-schmid_dynamic_2010" role="doc-biblioref">Schmid 2010</a>)</span>, DMDc <span class="citation" data-cites="proctor_dynamic_2016">(<a href="#ref-proctor_dynamic_2016" role="doc-biblioref">Proctor, Brunton, and Kutz 2016</a>)</span>, ioDMD<span class="citation" data-cites="benner_reduced_2018">(<a href="#ref-benner_reduced_2018" role="doc-biblioref">Benner, Himpe, and Mitchell 2018</a>)</span>, ERA <span class="citation" data-cites="juang_eigensystem_1985">(<a href="#ref-juang_eigensystem_1985" role="doc-biblioref">Juang and Pappa 1985</a>)</span>, or N4SID <span class="citation" data-cites="van_overschee_n4sid_1993">(<a href="#ref-van_overschee_n4sid_1993" role="doc-biblioref">Van Overschee and Moor 1993</a>)</span>. The core of this work package is thus unification of all of these approaches under the umbrella of reduced-rank regression and benchmarking the resulting performances against classical algorithms or heuristics used in the literature for the related tasks.</p>
 <section id="task-2.1-unifying-framework-for-data-driven-linear-modeling" class="level4">
 <h4 class="anchored" data-anchor-id="task-2.1-unifying-framework-for-data-driven-linear-modeling">Task 2.1 – Unifying framework for data-driven linear modeling</h4>
 <ul class="task-list">
@@ -339,6 +353,13 @@ div.csl-indent {
 </section>
 <section id="work-package-3-parameterization-and-interpolation-on-the-grassman-and-stiefel-manifolds" class="level3">
 <h3 class="anchored" data-anchor-id="work-package-3-parameterization-and-interpolation-on-the-grassman-and-stiefel-manifolds">Work Package #3 – Parameterization and interpolation on the Grassman and Stiefel manifolds</h3>
+<p>This third work package constitutes the major contribution of this project: the parameterization of data-driven models with respect to the operating conditions. For simplicity, parameterization with respect to a single parameter will be considered, albeit the proposed methodology is more general. Given training data ate different operating conditions, a data-driven linear model can be identified for each sampled point in the parameter space using the methodology developed in WP2. Yet, interpolating the models matrices in an entry wise fashion for a new operating condition cannot be used as it would not preserve the underlying low-rank structure of the problem. This structured interpolation needs to take place on a particular matrix manifold, either the Grassman or Stiefel manifold. Because they are Riemannian manifolds, both are equipped with an intrinsic notion of distance.</p>
+<p>This work package aims at exploring the possibility to use the tools from differential geometry to obtain parameterized data-driven linear models. Our attention will be focused on two particular points:</p>
+<ol type="1">
+<li>How to sample properly the parameter space for the particular problem of control-oriented models?</li>
+<li>Defining <em>a priori</em> and <em>a posteriori</em> error estimates of the interpolated models.</li>
+</ol>
+<p>As for WP2, the performances of the parameterized data-driven models will be benchmarked and compared against those of the high-fidelity models. The differnt algorithms for the parametrization will be implemented in an open-source library. This work package mostly covers the third year of the project, corresponding to the second year of the Ph. D. thesis.</p>
 <section id="task-3.1-parameterization-of-bpod-on-the-grassman-manifold" class="level4">
 <h4 class="anchored" data-anchor-id="task-3.1-parameterization-of-bpod-on-the-grassman-manifold">Task 3.1 – Parameterization of BPOD on the Grassman manifold</h4>
 <ul class="task-list">
@@ -366,6 +387,7 @@ div.csl-indent {
 </section>
 <section id="work-package-4-sensitivity-uncertainty-quantification-and-applications" class="level3">
 <h3 class="anchored" data-anchor-id="work-package-4-sensitivity-uncertainty-quantification-and-applications">Work Package #4 – Sensitivity, uncertainty quantification, and applications</h3>
+<p>Tasks included in this work package are quite prospective. An aspect often overlooked in data-driven models applied to fluid dynamics is their robustness and statistical significance. Assessing the prediction uncertainty is also critical, particularly for feedback control using an imperfect model. While techniques falling under the umbrella of <em>robust control</em> or <em>model predictive control</em> exist, a different route will be explored, combining ideas from sensitivity analysis and uncertainty quantification with statistics on the Stiefel manifold.</p>
 <section id="task-4.1-sensitivity-of-data-driven-models-to-varying-parameters" class="level4">
 <h4 class="anchored" data-anchor-id="task-4.1-sensitivity-of-data-driven-models-to-varying-parameters">Task 4.1 – Sensitivity of data-driven models to varying parameters</h4>
 </section>
@@ -395,14 +417,29 @@ div.csl-indent {
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-benner_reduced_2018" class="csl-entry" role="listitem">
+Benner, Peter, Christian Himpe, and Tim Mitchell. 2018. <span>“On Reduced Input-Output Dynamic Mode Decomposition.”</span> <em>Adv Comput Math</em> 44 (6): 1751–68. <a href="https://doi.org/10.1007/s10444-018-9592-x">https://doi.org/10.1007/s10444-018-9592-x</a>.
+</div>
 <div id="ref-bewley_methods_2016" class="csl-entry" role="listitem">
 Bewley, Thomas, Paolo Luchini, and Jan Pralits. 2016. <span>“Methods for Solution of Large Optimal Control Problems That Bypass Open-Loop Model Reduction.”</span> <em>Meccanica</em> 51 (12): 2997–3014. <a href="https://doi.org/10.1007/s11012-016-0547-3">https://doi.org/10.1007/s11012-016-0547-3</a>.
+</div>
+<div id="ref-juang_eigensystem_1985" class="csl-entry" role="listitem">
+Juang, Jer-Nan, and Richard S. Pappa. 1985. <span>“An Eigensystem Realization Algorithm for Modal Parameter Identification and Model Reduction.”</span> <em>Journal of Guidance, Control, and Dynamics</em> 8 (5): 620–27. <a href="https://doi.org/10.2514/3.20031">https://doi.org/10.2514/3.20031</a>.
+</div>
+<div id="ref-proctor_dynamic_2016" class="csl-entry" role="listitem">
+Proctor, Joshua L., Steven L. Brunton, and J. Nathan Kutz. 2016. <span>“Dynamic <span>Mode</span> <span>Decomposition</span> with <span>Control</span>.”</span> <em>SIAM J. Appl. Dyn. Syst.</em> 15 (1): 142–61. <a href="https://doi.org/10.1137/15M1013857">https://doi.org/10.1137/15M1013857</a>.
 </div>
 <div id="ref-rowley_model_2005" class="csl-entry" role="listitem">
 Rowley, C. W. 2005. <span>“Model Reduction for Fluids, Using Balanced Proper Orthogonal Decomposition.”</span> <em>Int. J. Bifurcation Chaos</em> 15 (03): 997–1013. <a href="https://doi.org/10.1142/S0218127405012429">https://doi.org/10.1142/S0218127405012429</a>.
 </div>
+<div id="ref-schmid_dynamic_2010" class="csl-entry" role="listitem">
+Schmid, Peter J. 2010. <span>“Dynamic Mode Decomposition of Numerical and Experimental Data.”</span> <em>J. Fluid Mech.</em> 656 (August): 5–28. <a href="https://doi.org/10.1017/S0022112010001217">https://doi.org/10.1017/S0022112010001217</a>.
+</div>
 <div id="ref-semeraro_full-order_2018" class="csl-entry" role="listitem">
 Semeraro, Onofrio, and Jan O. Pralits. 2018. <span>“Full-Order Optimal Compensators for Flow Control: The Multiple Inputs Case.”</span> <em>Theor. Comput. Fluid Dyn.</em> 32 (3): 285–305. <a href="https://doi.org/10.1007/s00162-018-0454-4">https://doi.org/10.1007/s00162-018-0454-4</a>.
+</div>
+<div id="ref-van_overschee_n4sid_1993" class="csl-entry" role="listitem">
+Van Overschee, P., and B. de Moor. 1993. <span>“<span>N4SID</span>: <span>Numerical</span> <span>Algorithms</span> for <span>State</span> <span>Space</span> <span>Subspace</span> <span>System</span> <span>Identification</span>.”</span> <em>IFAC Proceedings Volumes</em>, 12th <span>Triennal</span> <span>Wold</span> <span>Congress</span> of the <span>International</span> <span>Federation</span> of <span>Automatic</span> control. <span>Volume</span> 5 <span>Associated</span> <span>Technologies</span> and <span>Recent</span> <span>Developments</span>, <span>Sydney</span>, <span>Australia</span>, 18-23 <span>July</span>, 26 (2, Part 5): 55–58. <a href="https://doi.org/10.1016/S1474-6670(17)48221-8">https://doi.org/10.1016/S1474-6670(17)48221-8</a>.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

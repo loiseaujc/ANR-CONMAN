@@ -144,9 +144,8 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#sec-baseline" id="toc-sec-baseline" class="nav-link" data-scroll-target="#sec-baseline"><span class="header-section-number">2.1</span> Baseline models</a></li>
   <li><a href="#sec-numerics" id="toc-sec-numerics" class="nav-link" data-scroll-target="#sec-numerics"><span class="header-section-number">2.2</span> Theoretical framework and numerical tools</a></li>
-  <li><a href="#sec-flowconf" id="toc-sec-flowconf" class="nav-link" data-scroll-target="#sec-flowconf"><span class="header-section-number">2.3</span> Canonical flow configurations</a></li>
-  <li><a href="#sec-conclusion" id="toc-sec-conclusion" class="nav-link" data-scroll-target="#sec-conclusion"><span class="header-section-number">2.4</span> Problems encountered and actions taken for scientific communication and dissemination</a></li>
-  <li><a href="#sec-next" id="toc-sec-next" class="nav-link" data-scroll-target="#sec-next"><span class="header-section-number">2.5</span> What’s next?</a></li>
+  <li><a href="#sec-conclusion" id="toc-sec-conclusion" class="nav-link" data-scroll-target="#sec-conclusion"><span class="header-section-number">2.3</span> Problems encountered and actions taken for scientific communication and dissemination</a></li>
+  <li><a href="#sec-next" id="toc-sec-next" class="nav-link" data-scroll-target="#sec-next"><span class="header-section-number">2.4</span> What’s next?</a></li>
   </ul></li>
   <li><a href="#bibliography" id="toc-bibliography" class="nav-link" data-scroll-target="#bibliography">Bibliography</a></li>
   </ul>
@@ -265,7 +264,7 @@ Hiring process for the Postdoctoral Research
 <p>At the time of acceptance by ANR, plan was to hire a postdoctoral researcher in the first quarter of 2023. Unfortunately, no candidate was found before May 2023. The successful hiree, Simon Kern, has defended his Ph. D. work at KTH early June 2023 and will join <strong>DynFluid</strong> at the begining of the Fall semester. These human ressources issues forced us to postpone some tasks in <em>Work Package #1</em> by a few months. This should not impact however the overall calendar of the project.</p>
 </div>
 </div>
-<p>This is the first technical report (D0.1) of the <strong>CONMAN</strong> project. It is organized as follows: <a href="#sec-baseline">Section&nbsp;2.1</a> provides a thorough presentation of the baseline techniques, namely <em>Balanced Proper Orthogonal Decomposition</em> for reduced-order modeling and the <em>POD-QR</em> method for near-optimal actuators/sensors selection. <a href="#sec-numerics">Section&nbsp;2.2</a> describes the theoretical tools already available to the project members or under active development, along with their numerical implementations. Then, <a href="#sec-flowconf">Section&nbsp;2.3</a> introduces the canonical flow configurations used throughout the project for benchmark purposes. These canonical flow configurations also serve as pedagogical examples to emphasizes some of the challenges tackled in this project and problems posed by the inconsiderate used of advanced machine learning techniques. Finally, <a href="#sec-conclusion">Section&nbsp;2.4</a> discusses some of the problems faced by members of the project as well as presenting some of the actions taken for the scientific communication and dissemination while <a href="#sec-next">Section&nbsp;2.5</a> teases some of the scientific advances to be expected for the next technical report (D0.2, due Dec.&nbsp;2023).</p>
+<p>This is the first technical report (D0.1) of the <strong>CONMAN</strong> project. It is organized as follows: <a href="#sec-baseline">Section&nbsp;2.1</a> provides a thorough presentation of the baseline techniques, namely <em>Balanced Proper Orthogonal Decomposition</em> for reduced-order modeling and the <em>POD-QR</em> method for near-optimal actuators/sensors selection. <a href="#sec-numerics">Section&nbsp;2.2</a> describes the theoretical tools already available to the project members or under active development, along with their numerical implementations. Finally, <a href="#sec-conclusion">Section&nbsp;2.3</a> discusses some of the problems faced by members of the project as well as presenting some of the actions taken for the scientific communication and dissemination while <a href="#sec-next">Section&nbsp;2.4</a> teases some of the scientific advances to be expected for the next technical report (D0.2, due Dec.&nbsp;2023).</p>
 <section id="sec-baseline" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="sec-baseline"><span class="header-section-number">2.1</span> Baseline models</h3>
 <section id="reduced-order-modeling" class="level4" data-number="2.1.1">
@@ -508,6 +507,21 @@ Implementation details
 <h3 data-number="2.2" class="anchored" data-anchor-id="sec-numerics"><span class="header-section-number">2.2</span> Theoretical framework and numerical tools</h3>
 <section id="sec-numerics-cca" class="level4" data-number="2.2.1">
 <h4 data-number="2.2.1" class="anchored" data-anchor-id="sec-numerics-cca"><span class="header-section-number">2.2.1</span> The fundamental equation of component analysis</h4>
+<p>Many practical models in engineering sciences belong to the class of <em>generalized linear models</em></p>
+<p><span class="math display">\[
+\mathbf{y} = \mathbf{Kx} + \boldsymbol{\varepsilon}
+\]</span></p>
+<p>with <span class="math inline">\(\mathbf{y} \in \mathbb{R}^m\)</span>, <span class="math inline">\(\mathbf{x} \in \mathbb{R}^n\)</span> and <span class="math inline">\(\mathbf{K} \in \mathbb{R}^{m \times n}\)</span> a linear mapping from <span class="math inline">\(\mathbf{x}\)</span> to <span class="math inline">\(\mathbf{y}\)</span>. In system identification, it includes for instance OKID where <span class="math inline">\(\mathbf{y}\)</span> is the response of the unknown linear system, <span class="math inline">\(\mathbf{K}\)</span> a Toeplitz matrix constructed from the input sequence, and <span class="math inline">\(\mathbf{x}\)</span> is the vector of unknown Markov parameters of the system. Similarly, <em>linear stochastic estimation</em> or the <em>linear deconvolution problem</em> can also be cast as generalized linear models.</p>
+<p>Of interest to us are situations where the operator <span class="math inline">\(\mathbf{K}\)</span> is unknown. Given training pairs <span class="math inline">\(\left( \mathbf{x}_i, \mathbf{y}_i \right)\)</span>, an ordinary least-squares regression can be formulated to identify <span class="math inline">\(\mathbf{K}\)</span>. yet, for typical engineering problems, <span class="math inline">\(\mathbf{x}\)</span> and/or <span class="math inline">\(\mathbf{y}\)</span> are high-dimensional vectors. Hence, we are unlikely to have sufficient data to obtain a good statistical estimate of <span class="math inline">\(\mathbf{K}\)</span>. It can however be assumed to be a low-rank operator, an assumption often verified for high-dimensional dissipative systems. A good estimate can then be obtained by solving the following rank-constrained problem</p>
+<p><span class="math display">\[
+\begin{aligned}
+\min &amp; \quad \| \mathbf{M}^\frac12 \left( \mathbf{Y} - \mathbf{PQ}^T \mathbf{X} \right) \mathbf{W}^\frac12 \|_F^2 \\
+\mathrm{sub.~to} &amp; \quad \mathrm{rank}~\mathbf{P} = r.
+\end{aligned}
+\]</span></p>
+<p>Here, <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{Y}\)</span> are data matrices, $ and <span class="math inline">\(\mathbf{W}\)</span> are symmetric positive (semi-) definite matrices and <span class="math inline">\(r\)</span> is the desired rank of the approximation. Although non-convex, this rank-constrained problem admits a closed-form solution <span class="citation" data-cites="heas_low-rank_2022 loiseau_data-driven_2020">(<a href="#ref-heas_low-rank_2022" role="doc-biblioref">Héas and Herzet 2022</a>; <a href="#ref-loiseau_data-driven_2020" role="doc-biblioref">Loiseau 2020</a>)</span>. In the statistics community, this problem is also known as the *fundamental equation of component analysis$ <span class="citation" data-cites="de_la_torre_least-squares_2012">(<a href="#ref-de_la_torre_least-squares_2012" role="doc-biblioref">De la Torre 2012</a>)</span>.</p>
+<p>Many tools classically used in data-driven engineering fall in this class of problem. As an example, POD analysis can be recovered from this problem by setting <span class="math inline">\(\mathbf{X} = \mathbf{Y}\)</span> and <span class="math inline">\(\mathbf{P} = \mathbf{Q}\)</span> leading to the celebrated low-rank matrix approximation problem whose solution is given by the truncated singular value decomposition of the data matrix <span class="math inline">\(\mathbf{X}\)</span>. Likewise, <span class="citation" data-cites="heas_low-rank_2022">Héas and Herzet (<a href="#ref-heas_low-rank_2022" role="doc-biblioref">2022</a>)</span> and <span class="citation" data-cites="loiseau_data-driven_2020">Loiseau (<a href="#ref-loiseau_data-driven_2020" role="doc-biblioref">2020</a>)</span> have shown how <em>Dynamic Mode Decomposition</em> <span class="citation" data-cites="schmid_dynamic_2022">(<a href="#ref-schmid_dynamic_2022" role="doc-biblioref">Schmid 2022</a>)</span> can be cast in this form leading to a more robust and well-posed DMD problem.</p>
+<p>Along with the aforementionned modal decompositions, Jean-Christophe Loiseau and Steven L. Brunton have been able over the course of the past year to cast numerous linear system identification techniques into this framework. It includes the <em>EigenRealization Algorithm</em> <span class="citation" data-cites="juang_eigensystem_1985">(<a href="#ref-juang_eigensystem_1985" role="doc-biblioref">Juang and Pappa 1985</a>)</span>, <em>N4SID</em> <span class="citation" data-cites="van_overschee_n4sid_1993">(<a href="#ref-van_overschee_n4sid_1993" role="doc-biblioref">Van Overschee and Moor 1993</a>)</span>, MOESP <span class="citation" data-cites="verhaegen_subspace_1992-1">(<a href="#ref-verhaegen_subspace_1992-1" role="doc-biblioref">Verhaegen and Dewilde 1992</a>)</span> and <em>CVA</em> <span class="citation" data-cites="larimore_system_1983">(<a href="#ref-larimore_system_1983" role="doc-biblioref">Larimore 1983</a>)</span>. Reduced-rank regression thus provides a unifying framework for a large class of data-driven linear modeling techniques, simplyfing both the implementation of the algorithm as well as the analysis of their statistical properties. A review article by Loiseau &amp; Brunton is currently in preparation.</p>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -518,7 +532,20 @@ Implementation in the <code>nekStab</code> library
 </div>
 </div>
 <div class="callout-body-container callout-body">
-
+<p>Currently, efforts are being devoted to the implementation of the reduced-rank regression algorithm in the open-source library <code>nekStab</code>. This implementation will enable us to fit these models using high-dimensional fluid dynamics datasets by benefitting from the high-performance capabilities of the spectral element solver <code>Nek5000</code>.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Implementation in <code>DataDrivenLinearModels.jl</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In parallel to the implementation in <code>nekStab</code>, specialized for incompressible fluid dynamics simulation data obtained from <code>Nek5000</code>, a stand-alone Julia package <code>DataDrivenLinearModels.jl</code> will be developed. This package will have a large usage base than the<code>nekStab</code> implementation as data will simply need to be stored in standard matrix formats.</p>
 </div>
 </div>
 </section>
@@ -534,31 +561,22 @@ The Julia package <code>SubmodularOpt.jl</code>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-
+<p><a href="https://github.com/loiseaujc/SubmodularOpt.jl">SubmodularOpt.jl</a> is a Julia package currently under active development by members of the <strong>CONMAN</strong> project. It provides efficient implementations of standard submodular function maximization algorithms, including the <em>Lazy Greedy</em> (<a href="https://link.springer.com/chapter/10.1007/BFb0006528">Minoux, 1978</a>) or the <em>Lazier than Lazy Greedy</em> (<a href="https://ojs.aaai.org/index.php/AAAI/article/view/9486">Mirzasoleiman et al., 2015</a>) algorithms for maximizing a monotone submodular set function with cardinality constraint. Inspired from the concave-convex procedure for minimizing a difference of convex functions, <a href="https://github.com/loiseaujc/SubmodularOpt.jl">SubmodularOpt.jl</a> also provides an implementation of the <em>SubSup procedure</em> (<a href="https://arxiv.org/abs/1207.0560">Iyer &amp; Bilmes, 2013</a>) for the minimization/maximization of the difference of two submodular functions.</p>
 </div>
 </div>
 </section>
 </section>
-<section id="sec-flowconf" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="sec-flowconf"><span class="header-section-number">2.3</span> Canonical flow configurations</h3>
-<section id="the-two-dimensional-bénard-von-kàrmàn-vortex-street" class="level4" data-number="2.3.1">
-<h4 data-number="2.3.1" class="anchored" data-anchor-id="the-two-dimensional-bénard-von-kàrmàn-vortex-street"><span class="header-section-number">2.3.1</span> The two-dimensional Bénard-von Kàrmàn vortex street</h4>
-</section>
-<section id="the-two-dimensional-shear-driven-cavity-flow" class="level4" data-number="2.3.2">
-<h4 data-number="2.3.2" class="anchored" data-anchor-id="the-two-dimensional-shear-driven-cavity-flow"><span class="header-section-number">2.3.2</span> The two-dimensional shear-driven cavity flow</h4>
-</section>
-</section>
-<section id="sec-conclusion" class="level3" data-number="2.4">
-<h3 data-number="2.4" class="anchored" data-anchor-id="sec-conclusion"><span class="header-section-number">2.4</span> Problems encountered and actions taken for scientific communication and dissemination</h3>
-<section id="human-ressources" class="level4" data-number="2.4.1">
-<h4 data-number="2.4.1" class="anchored" data-anchor-id="human-ressources"><span class="header-section-number">2.4.1</span> Human ressources</h4>
+<section id="sec-conclusion" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="sec-conclusion"><span class="header-section-number">2.3</span> Problems encountered and actions taken for scientific communication and dissemination</h3>
+<section id="human-ressources" class="level4" data-number="2.3.1">
+<h4 data-number="2.3.1" class="anchored" data-anchor-id="human-ressources"><span class="header-section-number">2.3.1</span> Human ressources</h4>
 <p><strong>Postdocotral researcher –</strong> Recruitment of the postdoctoral researcher was initially planned for the first quarter of 2023. Unfortunately, despite the numerous applications, no applicant had the sufficient background in numerical simulation, reduced-order modeling or linear dynamical system theory to ensure rapid progress of the project. Decision has been made to postpone this recruitment to Fall 2023. Doing so gave the opportunity to Simon Kern to join the project. Simon defended his Ph. D. work entitled <em>Linear and non-linear dynamics of non-autonomous flows</em> at the Royal Institute of Technology (KTH, Sweden) early June 2023 under the joint supervision of Ardeshir Hanifi and Dan Henningson. He will join us in September.</p>
 </section>
-<section id="scientific-communication-and-dissemination" class="level4" data-number="2.4.2">
-<h4 data-number="2.4.2" class="anchored" data-anchor-id="scientific-communication-and-dissemination"><span class="header-section-number">2.4.2</span> Scientific communication and dissemination</h4>
+<section id="scientific-communication-and-dissemination" class="level4" data-number="2.3.2">
+<h4 data-number="2.3.2" class="anchored" data-anchor-id="scientific-communication-and-dissemination"><span class="header-section-number">2.3.2</span> Scientific communication and dissemination</h4>
 <p>This section summarizes some of the actions taken for scientific communication and dissemination of the results related (work package WP5). So far, these actions are quite limited. This results from the delay in the recruitment of the postdoctoral researcher (initially expected to start during the first quarter of 2023 but effectively starting early september) and the fact the project itself only started a few months ago.</p>
-<section id="journal-articles" class="level5" data-number="2.4.2.1">
-<h5 data-number="2.4.2.1" class="anchored" data-anchor-id="journal-articles"><span class="header-section-number">2.4.2.1</span> Journal Articles</h5>
+<section id="journal-articles" class="level5" data-number="2.3.2.1">
+<h5 data-number="2.3.2.1" class="anchored" data-anchor-id="journal-articles"><span class="header-section-number">2.3.2.1</span> Journal Articles</h5>
 <p>Although the project officially started only early January 2023, three papers are already in preparation. A brief overview of each is given below.</p>
 <p><strong>Unifying framework for data-driven linear modeling with rank constraints</strong></p>
 <table class="table">
@@ -605,8 +623,8 @@ The Julia package <code>SubmodularOpt.jl</code>
 </table>
 <p><code>SubmodularOpt.jl</code> is one of the main packages of this project. It is being openly developped using <a href="github.com">GitHub</a>. This journal article, to be submitted to the <a href="https://joss.theoj.org/">Journal of Open Source Softwares</a>, presents its core components as well as an example of sensor placement problem it can solve. Following the FAIR principles (Free, Accessible, Inclusive, Reproducible) for open and reproducible science, the corresponding release of <code>SubmodularOpt.jl</code> will be archived for long-term preservation on platforms such as Zenodo, granting it with a citable DOI.</p>
 </section>
-<section id="conferences-and-seminars" class="level5" data-number="2.4.2.2">
-<h5 data-number="2.4.2.2" class="anchored" data-anchor-id="conferences-and-seminars"><span class="header-section-number">2.4.2.2</span> Conferences and Seminars</h5>
+<section id="conferences-and-seminars" class="level5" data-number="2.3.2.2">
+<h5 data-number="2.3.2.2" class="anchored" data-anchor-id="conferences-and-seminars"><span class="header-section-number">2.3.2.2</span> Conferences and Seminars</h5>
 <p>Since <strong>CONMAN</strong> started only six months ago, members of the project did not have the occasion (yet) to present their work in conferences. Plans are being made however to send two contributions to the <a href="https://www.2023apsdfd.org/">APD Division of Fluid Dynamics 76th Annual Meeting</a> to be held in Washington DC, USA late November 2023. These contributions include:</p>
 <ul>
 <li><em>A unifying framework for data-driven linear modeling with rank constraints.</em> <strong>J.-Ch. Loiseau</strong> and S. L. Brunton.</li>
@@ -621,8 +639,8 @@ The Julia package <code>SubmodularOpt.jl</code>
 </section>
 </section>
 </section>
-<section id="sec-next" class="level3" data-number="2.5">
-<h3 data-number="2.5" class="anchored" data-anchor-id="sec-next"><span class="header-section-number">2.5</span> What’s next?</h3>
+<section id="sec-next" class="level3" data-number="2.4">
+<h3 data-number="2.4" class="anchored" data-anchor-id="sec-next"><span class="header-section-number">2.4</span> What’s next?</h3>
 <p>During the next period (July-December 2023), efforts will be focused on wrapping up the implementations of the baseline models in our different libraries. A particular attention will be devoted to <em>validation &amp; verification</em> of the results for these baseline models as well as to their <em>reproducibility</em>. This includes:</p>
 <ul>
 <li>Validation and verification of the BPOD implementation in <code>nekStab</code> against applications available in the literature.</li>
@@ -659,14 +677,23 @@ Burns, John A., and Terry L. Herdman. 2021. <span>“Optimal <span>Sensor</span>
 <div id="ref-chen_h2_2011" class="csl-entry" role="listitem">
 Chen, Kevin K., and Clarence W. Rowley. 2011. <span>“H2 Optimal Actuator and Sensor Placement in the Linearised Complex <span>Ginzburg</span>–<span>Landau</span> System.”</span> <em>Journal of Fluid Mechanics</em> 681 (August): 241–60. <a href="https://doi.org/10.1017/jfm.2011.195">https://doi.org/10.1017/jfm.2011.195</a>.
 </div>
+<div id="ref-de_la_torre_least-squares_2012" class="csl-entry" role="listitem">
+De la Torre, F. 2012. <span>“A <span>Least</span>-<span>Squares</span> <span>Framework</span> for <span>Component</span> <span>Analysis</span>.”</span> <em>IEEE Trans. Pattern Anal. Mach. Intell.</em> 34 (6): 1041–55. <a href="https://doi.org/10.1109/TPAMI.2011.184">https://doi.org/10.1109/TPAMI.2011.184</a>.
+</div>
 <div id="ref-drmac_new_2016" class="csl-entry" role="listitem">
 Drmac, Zlatko, and Serkan Gugercin. 2016. <span>“A <span>New</span> <span>Selection</span> <span>Operator</span> for the <span>Discrete</span> <span>Empirical</span> <span>Interpolation</span> <span>Method</span> – Improved a Priori Error Bound and Extensions.”</span> <em>SIAM J. Sci. Comput.</em> 38 (2): A631–48. <a href="https://doi.org/10.1137/15M1019271">https://doi.org/10.1137/15M1019271</a>.
+</div>
+<div id="ref-heas_low-rank_2022" class="csl-entry" role="listitem">
+Héas, Patrick, and Cédric Herzet. 2022. <span>“Low-<span>Rank</span> <span>Dynamic</span> <span>Mode</span> <span>Decomposition</span>: <span>An</span> <span>Exact</span> and <span>Tractable</span> <span>Solution</span>.”</span> <em>J Nonlinear Sci</em> 32 (1): 8. <a href="https://doi.org/10.1007/s00332-021-09770-w">https://doi.org/10.1007/s00332-021-09770-w</a>.
 </div>
 <div id="ref-juang_eigensystem_1985" class="csl-entry" role="listitem">
 Juang, Jer-Nan, and Richard S. Pappa. 1985. <span>“An Eigensystem Realization Algorithm for Modal Parameter Identification and Model Reduction.”</span> <em>Journal of Guidance, Control, and Dynamics</em> 8 (5): 620–27. <a href="https://doi.org/10.2514/3.20031">https://doi.org/10.2514/3.20031</a>.
 </div>
 <div id="ref-larimore_system_1983" class="csl-entry" role="listitem">
 Larimore, Wallace E. 1983. <span>“System <span>Identification</span>, <span>Reduced</span>-<span>Order</span> <span>Filtering</span> and <span>Modeling</span> via <span>Canonical</span> <span>Variate</span> <span>Analysis</span>.”</span> In <em>1983 <span>American</span> <span>Control</span> <span>Conference</span></em>, 445–51. <a href="https://doi.org/10.23919/ACC.1983.4788156">https://doi.org/10.23919/ACC.1983.4788156</a>.
+</div>
+<div id="ref-loiseau_data-driven_2020" class="csl-entry" role="listitem">
+Loiseau, Jean-Christophe. 2020. <span>“Data-Driven Modeling of the Chaotic Thermal Convection in an Annular Thermosyphon.”</span> <em>Theor. Comput. Fluid Dyn.</em> 34 (4): 339–65. <a href="https://doi.org/10.1007/s00162-020-00536-w">https://doi.org/10.1007/s00162-020-00536-w</a>.
 </div>
 <div id="ref-manohar_data-driven_2018" class="csl-entry" role="listitem">
 Manohar, Krithika, Bingni W. Brunton, J. Nathan Kutz, and Steven L. Brunton. 2018. <span>“Data-<span>Driven</span> <span>Sparse</span> <span>Sensor</span> <span>Placement</span> for <span>Reconstruction</span>: <span>Demonstrating</span> the <span>Benefits</span> of <span>Exploiting</span> <span>Known</span> <span>Patterns</span>.”</span> <em>IEEE Control Systems Magazine</em> 38 (3): 63–86. <a href="https://doi.org/10.1109/MCS.2018.2810460">https://doi.org/10.1109/MCS.2018.2810460</a>.
@@ -685,6 +712,9 @@ Schmid, Peter J. 2022. <span>“Dynamic <span>Mode</span> <span>Decomposition</s
 </div>
 <div id="ref-van_overschee_n4sid_1993" class="csl-entry" role="listitem">
 Van Overschee, P., and B. de Moor. 1993. <span>“<span>N4SID</span>: <span>Numerical</span> <span>Algorithms</span> for <span>State</span> <span>Space</span> <span>Subspace</span> <span>System</span> <span>Identification</span>.”</span> <em>IFAC Proceedings Volumes</em>, 12th <span>Triennal</span> <span>Wold</span> <span>Congress</span> of the <span>International</span> <span>Federation</span> of <span>Automatic</span> control. <span>Volume</span> 5 <span>Associated</span> <span>Technologies</span> and <span>Recent</span> <span>Developments</span>, <span>Sydney</span>, <span>Australia</span>, 18-23 <span>July</span>, 26 (2, Part 5): 55–58. <a href="https://doi.org/10.1016/S1474-6670(17)48221-8">https://doi.org/10.1016/S1474-6670(17)48221-8</a>.
+</div>
+<div id="ref-verhaegen_subspace_1992-1" class="csl-entry" role="listitem">
+Verhaegen, M., and P. Dewilde. 1992. <span>“Subspace Model Identification <span>Part</span> 1. <span>The</span> Output-Error State-Space Model Identification Class of Algorithms.”</span> <em>International Journal of Control</em> 56 (5): 1187–1210. <a href="https://doi.org/10.1080/00207179208934363">https://doi.org/10.1080/00207179208934363</a>.
 </div>
 <div id="ref-willcox_unsteady_2006" class="csl-entry" role="listitem">
 Willcox, K. 2006. <span>“Unsteady Flow Sensing and Estimation via the Gappy Proper Orthogonal Decomposition.”</span> <em>Computers &amp; Fluids</em> 35 (2): 208–26. <a href="https://doi.org/10.1016/j.compfluid.2004.11.006">https://doi.org/10.1016/j.compfluid.2004.11.006</a>.
