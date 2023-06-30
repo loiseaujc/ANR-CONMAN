@@ -65,8 +65,6 @@ This should not impact however the overall calendar of the project.
 This is the first technical report (D0.1) of the **CONMAN** project.
 It is organized as follows: @sec-baseline provides a thorough presentation of the baseline techniques, namely *Balanced Proper Orthogonal Decomposition* for reduced-order modeling and the *POD-QR* method for near-optimal actuators/sensors selection.
 @sec-numerics describes the theoretical tools already available to the project members or under active development, along with their numerical implementations.
-Then, @sec-flowconf introduces the canonical flow configurations used throughout the project for benchmark purposes.
-These canonical flow configurations also serve as pedagogical examples to emphasizes some of the challenges tackled in this project and problems posed by the inconsiderate used of advanced machine learning techniques.
 Finally, @sec-conclusion discusses some of the problems faced by members of the project as well as presenting some of the actions taken for the scientific communication and dissemination while @sec-next teases some of the scientific advances to be expected for the next technical report (D0.2, due Dec. 2023).
 
 ### Baseline models{#sec-baseline}
@@ -428,28 +426,75 @@ In the rest of this project, this baseline model will be re-implemented using th
 
 #### The fundamental equation of component analysis {#sec-numerics-cca}
 
+Many practical models in engineering sciences belong to the class of *generalized linear models*
+
+$$
+\mathbf{y} = \mathbf{Kx} + \boldsymbol{\varepsilon}
+$$
+
+with $\mathbf{y} \in \mathbb{R}^m$, $\mathbf{x} \in \mathbb{R}^n$ and $\mathbf{K} \in \mathbb{R}^{m \times n}$ a linear mapping from $\mathbf{x}$ to $\mathbf{y}$.
+In system identification, it includes for instance OKID where $\mathbf{y}$ is the response of the unknown linear system, $\mathbf{K}$ a Toeplitz matrix constructed from the input sequence, and $\mathbf{x}$ is the vector of unknown Markov parameters of the system.
+Similarly, *linear stochastic estimation* or the *linear deconvolution problem* can also be cast as generalized linear models.
+
+Of interest to us are situations where the operator $\mathbf{K}$ is unknown.
+Given training pairs $\left( \mathbf{x}_i, \mathbf{y}_i \right)$, an ordinary least-squares regression can be formulated to identify $\mathbf{K}$.
+yet, for typical engineering problems, $\mathbf{x}$ and/or $\mathbf{y}$ are high-dimensional vectors.
+Hence, we are unlikely to have sufficient data to obtain a good statistical estimate of $\mathbf{K}$.
+It can however be assumed to be a low-rank operator, an assumption often verified for high-dimensional dissipative systems.
+A good estimate can then be obtained by solving the following rank-constrained problem
+
+$$
+\begin{aligned}
+\min & \quad \| \mathbf{M}^\frac12 \left( \mathbf{Y} - \mathbf{PQ}^T \mathbf{X} \right) \mathbf{W}^\frac12 \|_F^2 \\
+\mathrm{sub.~to} & \quad \mathrm{rank}~\mathbf{P} = r.
+\end{aligned}
+$$
+
+Here, $\mathbf{X}$ and $\mathbf{Y}$ are data matrices, $\mathbf{M} and $\mathbf{W}$ are symmetric positive (semi-) definite matrices and $r$ is the desired rank of the approximation.
+Although non-convex, this rank-constrained problem admits a closed-form solution [@heas_low-rank_2022;@loiseau_data-driven_2020].
+In the statistics community, this problem is also known as the *fundamental equation of component analysis$ [@de_la_torre_least-squares_2012].
+
+Many tools classically used in data-driven engineering fall in this class of problem.
+As an example, POD analysis can be recovered from this problem by setting $\mathbf{X} = \mathbf{Y}$ and $\mathbf{P} = \mathbf{Q}$ leading to the celebrated low-rank matrix approximation problem whose solution is given by the truncated singular value decomposition of the data matrix $\mathbf{X}$.
+Likewise, @heas_low-rank_2022 and @loiseau_data-driven_2020 have shown how *Dynamic Mode Decomposition* [@schmid_dynamic_2022] can be cast in this form leading to a more robust and well-posed DMD problem.
+
+Along with the aforementionned modal decompositions, Jean-Christophe Loiseau and Steven L. Brunton have been able over the course of the past year to cast numerous linear system identification techniques into this framework.
+It includes the *EigenRealization Algorithm* [@juang_eigensystem_1985], *N4SID* [@van_overschee_n4sid_1993], MOESP [@verhaegen_subspace_1992-1] and *CVA* [@larimore_system_1983].
+Reduced-rank regression thus provides a unifying framework for a large class of data-driven linear modeling techniques, simplyfing both the implementation of the algorithm as well as the analysis of their statistical properties.
+A review article by Loiseau & Brunton is currently in preparation.
+
 ::: {.callout-note appearance="simple"}
 
 ## Implementation in the `nekStab` library
 
+Currently, efforts are being devoted to the implementation of the reduced-rank regression algorithm in the open-source library `nekStab`.
+This implementation will enable us to fit these models using high-dimensional fluid dynamics datasets by benefitting from the high-performance capabilities of the spectral element solver `Nek5000`.
 
 :::
 
+::: {.callout-note appearance="simple"}
+
+## Implementation in `DataDrivenLinearModels.jl`
+
+In parallel to the implementation in `nekStab`, specialized for incompressible fluid dynamics simulation data obtained from `Nek5000`, a stand-alone Julia package `DataDrivenLinearModels.jl` will be developed.
+This package will have a large usage base than the`nekStab` implementation as data will simply need to be stored in standard matrix formats.
+
+:::
+
+
 #### Submodular set function maximization
+
 
 
 ::: {.callout-note appearance="simple"}
 
 ## The Julia package `SubmodularOpt.jl`
 
+[SubmodularOpt.jl](https://github.com/loiseaujc/SubmodularOpt.jl) is a Julia package currently under active development by members of the **CONMAN** project.
+It provides efficient implementations of standard submodular function maximization algorithms, including the *Lazy Greedy* ([Minoux, 1978](https://link.springer.com/chapter/10.1007/BFb0006528)) or the *Lazier than Lazy Greedy* ([Mirzasoleiman et al., 2015](https://ojs.aaai.org/index.php/AAAI/article/view/9486)) algorithms for maximizing a monotone submodular set function with cardinality constraint.
+Inspired from the concave-convex procedure for minimizing a difference of convex functions, [SubmodularOpt.jl](https://github.com/loiseaujc/SubmodularOpt.jl) also provides an implementation of the *SubSup procedure* ([Iyer & Bilmes, 2013](https://arxiv.org/abs/1207.0560)) for the minimization/maximization of the difference of two submodular functions.
 
 :::
-
-### Canonical flow configurations{#sec-flowconf}
-
-#### The two-dimensional Bénard-von Kàrmàn vortex street
-
-#### The two-dimensional shear-driven cavity flow
 
 ### Problems encountered and actions taken for scientific communication and dissemination{#sec-conclusion}
 
