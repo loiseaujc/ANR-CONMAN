@@ -183,6 +183,7 @@ div.csl-indent {
 
 </header>
 
+<p><img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by.png" width="15%"></p>
 <p>This is the first progress report for the ANR JCJC project <strong>CONMAN</strong>, covering the period from January 1st, 2023 to June 30th, 2023.</p>
 <section id="identification" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="identification"><span class="header-section-number">1</span> Identification</h2>
@@ -519,7 +520,7 @@ Implementation details
 \mathrm{sub.~to} &amp; \quad \mathrm{rank}~\mathbf{P} = r.
 \end{aligned}
 \]</span></p>
-<p>Here, <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{Y}\)</span> are data matrices, $ and <span class="math inline">\(\mathbf{W}\)</span> are symmetric positive (semi-) definite matrices and <span class="math inline">\(r\)</span> is the desired rank of the approximation. Although non-convex, this rank-constrained problem admits a closed-form solution <span class="citation" data-cites="heas_low-rank_2022 loiseau_data-driven_2020">(<a href="#ref-heas_low-rank_2022" role="doc-biblioref">Héas and Herzet 2022</a>; <a href="#ref-loiseau_data-driven_2020" role="doc-biblioref">Loiseau 2020</a>)</span>. In the statistics community, this problem is also known as the *fundamental equation of component analysis$ <span class="citation" data-cites="de_la_torre_least-squares_2012">(<a href="#ref-de_la_torre_least-squares_2012" role="doc-biblioref">De la Torre 2012</a>)</span>.</p>
+<p>Here, <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{Y}\)</span> are data matrices, $ and <span class="math inline">\(\mathbf{W}\)</span> are symmetric positive (semi-) definite matrices and <span class="math inline">\(r\)</span> is the desired rank of the approximation. Although non-convex, this rank-constrained problem admits a closed-form solution <span class="citation" data-cites="heas_low-rank_2022 loiseau_data-driven_2020">(<a href="#ref-heas_low-rank_2022" role="doc-biblioref">Héas and Herzet 2022</a>; <a href="#ref-loiseau_data-driven_2020" role="doc-biblioref">Loiseau 2020</a>)</span>. In the statistics community, this problem is also known as the <em>fundamental equation of component analysis</em> <span class="citation" data-cites="de_la_torre_least-squares_2012">(<a href="#ref-de_la_torre_least-squares_2012" role="doc-biblioref">De la Torre 2012</a>)</span>.</p>
 <p>Many tools classically used in data-driven engineering fall in this class of problem. As an example, POD analysis can be recovered from this problem by setting <span class="math inline">\(\mathbf{X} = \mathbf{Y}\)</span> and <span class="math inline">\(\mathbf{P} = \mathbf{Q}\)</span> leading to the celebrated low-rank matrix approximation problem whose solution is given by the truncated singular value decomposition of the data matrix <span class="math inline">\(\mathbf{X}\)</span>. Likewise, <span class="citation" data-cites="heas_low-rank_2022">Héas and Herzet (<a href="#ref-heas_low-rank_2022" role="doc-biblioref">2022</a>)</span> and <span class="citation" data-cites="loiseau_data-driven_2020">Loiseau (<a href="#ref-loiseau_data-driven_2020" role="doc-biblioref">2020</a>)</span> have shown how <em>Dynamic Mode Decomposition</em> <span class="citation" data-cites="schmid_dynamic_2022">(<a href="#ref-schmid_dynamic_2022" role="doc-biblioref">Schmid 2022</a>)</span> can be cast in this form leading to a more robust and well-posed DMD problem.</p>
 <p>Along with the aforementionned modal decompositions, Jean-Christophe Loiseau and Steven L. Brunton have been able over the course of the past year to cast numerous linear system identification techniques into this framework. It includes the <em>EigenRealization Algorithm</em> <span class="citation" data-cites="juang_eigensystem_1985">(<a href="#ref-juang_eigensystem_1985" role="doc-biblioref">Juang and Pappa 1985</a>)</span>, <em>N4SID</em> <span class="citation" data-cites="van_overschee_n4sid_1993">(<a href="#ref-van_overschee_n4sid_1993" role="doc-biblioref">Van Overschee and Moor 1993</a>)</span>, MOESP <span class="citation" data-cites="verhaegen_subspace_1992-1">(<a href="#ref-verhaegen_subspace_1992-1" role="doc-biblioref">Verhaegen and Dewilde 1992</a>)</span> and <em>CVA</em> <span class="citation" data-cites="larimore_system_1983">(<a href="#ref-larimore_system_1983" role="doc-biblioref">Larimore 1983</a>)</span>. Reduced-rank regression thus provides a unifying framework for a large class of data-driven linear modeling techniques, simplyfing both the implementation of the algorithm as well as the analysis of their statistical properties. A review article by Loiseau &amp; Brunton is currently in preparation.</p>
 <div class="callout callout-style-simple callout-note callout-titled">
@@ -551,6 +552,41 @@ Implementation in <code>DataDrivenLinearModels.jl</code>
 </section>
 <section id="submodular-set-function-maximization" class="level4" data-number="2.2.2">
 <h4 data-number="2.2.2" class="anchored" data-anchor-id="submodular-set-function-maximization"><span class="header-section-number">2.2.2</span> Submodular set function maximization</h4>
+<p>Optimal sensor and actuator selection is an important unsolved problem in control theory. Nearly every downstream control decision is affected by the selected sensors and actuators. Yet, determining optimal locations is a brute-force search through the combinatorial possibilities. Given <span class="math inline">\(m\)</span> available sensors but a budget for only <span class="math inline">\(p\)</span> of them, there are</p>
+<p><span class="math display">\[
+\binom{m}{p} = \dfrac{m!}{\left( m - p \right)! \times p!}
+\]</span></p>
+<p>possible combinations. No matter the performance index considered, this is a rapidly intractable combinatorial problem. Various heuristics have been proposed in the literature for LTI systems, including <span class="citation" data-cites="chen_h2_2011">Chen and Rowley (<a href="#ref-chen_h2_2011" role="doc-biblioref">2011</a>)</span>, <span class="citation" data-cites="summers_submodularity_2016">Summers, Cortesi, and Lygeros (<a href="#ref-summers_submodularity_2016" role="doc-biblioref">2016</a>)</span>, <span class="citation" data-cites="zhang_sensor_2017">Zhang, Ayoub, and Sundaram (<a href="#ref-zhang_sensor_2017" role="doc-biblioref">2017</a>)</span>, <span class="citation" data-cites="manohar_data-driven_2018">Manohar et al. (<a href="#ref-manohar_data-driven_2018" role="doc-biblioref">2018</a>)</span>, <span class="citation" data-cites="burns_optimal_2021">Burns and Herdman (<a href="#ref-burns_optimal_2021" role="doc-biblioref">2021</a>)</span>, or <span class="citation" data-cites="manohar_optimal_2022">Manohar, Kutz, and Brunton (<a href="#ref-manohar_optimal_2022" role="doc-biblioref">2022</a>)</span> for instance. Most of these techniques are however targetting sensor and actuator placement for open-loop systems.</p>
+<p>Although we are eventually interested in applications of sensor and actuator placement for closed-loop systems, let us illustrate the optimization methodology developped in this project on a simpler problem. For that purpose, consider the following linear inverse problem</p>
+<p><span class="math display">\[
+\mathbf{y} = \mathbf{Cx} + \mathbf{v},
+\]</span></p>
+<p>where <span class="math inline">\(\mathbf{x} \in \mathbb{R}^n\)</span> is the state vector of the system, and <span class="math inline">\(\mathbf{C} \in \mathbb{R}^{m \times n}\)</span> is the observation matrix with each of its rows describing a different sensor. The vector <span class="math inline">\(\mathbf{y} \in \mathbb{R}^m\)</span> is the measurement vector whose i-th entry corresponds to a scalar observation of the i-th sensor, i.e.&nbsp;<span class="math inline">\(y_i = \mathbf{c}_i^T \mathbf{x} + v_i\)</span>. These measurements are being contaminated by the sensor noise <span class="math inline">\(\mathbf{v} \sim \mathcal{N}(\mathbf{0}, \mathbf{V})\)</span>. Our objective is to determine the best subset of sensors to activate as to minimize the estimation error, subject to a constraint on the number of activations. Let <span class="math inline">\(\mathbf{z} \in \left\{ 0, 1 \right\}^{m}\)</span> where <span class="math inline">\(z_i\)</span> indicates whether the i-th sensor has been selected (<span class="math inline">\(z_i = 1\)</span>) or not (<span class="math inline">\(z_i = 0\)</span>). The effective measurement equation can be expressed as</p>
+<p><span class="math display">\[
+\mathbf{y}_z = \mathbf{S}_z \mathbf{Cx} + \mathbf{S}_z \mathbf{v},
+\]</span></p>
+<p>where <span class="math inline">\(\mathbf{S}_z \in \left\{ 0, 1 \right\}^{\vert z \vert \times m}\)</span> is the selection operator constructed from the binary vector <span class="math inline">\(\mathbf{z}\)</span>. Adopting a Bayesian point of view, the minimum mean-squared error estimate is given by</p>
+<p><span class="math display">\[
+\mathbf{x} = \bar{\mathbf{x}} + \left( \boldsymbol{\Sigma}^{-1} + \mathbf{C}^T \mathbf{S}_z^T \mathbf{V}_z^{-1} \mathbf{S}_z \mathbf{C} \right)^{-1} \mathbf{C}^T \mathbf{S}_z^T \left( \mathbf{y}_z - \mathbf{S}_z \mathbf{C} \bar{\mathbf{x}} \right)
+\]</span></p>
+<p>with <span class="math inline">\(\boldsymbol{\Sigma}\)</span> the state covariance matrix. The matrix</p>
+<p><span class="math display">\[
+\mathbf{F}_z = \boldsymbol{\Sigma}^{-1} + \mathbf{C}^T \mathbf{S}_z^T \mathbf{V}_z^{-1} \mathbf{S}_z \mathbf{C}
+\]</span></p>
+<p>is the <em>Fisher information matrix</em>, and corresponds to the inverse of the estimator’s error covariance matrix. Our objective is thus to maximize the spectral content of this information matrix to ensure it as well conditionned as possible, thus reducing the estimation error.</p>
+<p>Different objective functions can be used. These are classically chosen as <span class="math inline">\(f_1(\mathbf{z}) = \mathrm{trace} \left( \mathbf{F}_z \right)\)</span>, <span class="math inline">\(f_2(\mathbf{z}) = \log\det \left( \mathbf{F}_z \right)\)</span>, or <span class="math inline">\(f_3(\mathbf{z}) = \lambda_{\min}\left( \mathbf{F}_z \right)\)</span>, corresponding to different optimal design strategies. In either case, we aim to solve the following optimization problem</p>
+<p><span class="math display">\[
+\begin{aligned}
+\max_{\mathbf{z} \in \left\{ 0, 1 \right\}^{m}} &amp; \quad f_i(\mathbf{z}) \\
+\mathrm{subjecto~to} &amp; \quad \vert \mathbf{z} \vert = p.
+\end{aligned}
+\]</span></p>
+<p>Despite being a combinatorially intractable problem, one can leverage some properties of the objective functions to design greedy algorithms with approximation guarantees <span class="citation" data-cites="shamaiah_greedy_2010">(<a href="#ref-shamaiah_greedy_2010" role="doc-biblioref">Shamaiah, Banerjee, and Vikalo 2010</a>)</span>. In particular, if the sensor noise covariance matrix is diagonal (i.e.&nbsp;uncorrelated noise), the function <span class="math inline">\(f_2(\mathbf{F}_z) = \log\det(\mathbf{F}_z)\)</span> is a <em>monotone submodular set function</em>:</p>
+<ul>
+<li><em>monotone</em> – Adding a new sensor can only improve the quality of our estimate.</li>
+<li><em>submodular</em> – As the number of selected sensors increases, the benefit of adding yet another sensor decreases. It is the <em>diminishing return property</em>.</li>
+</ul>
+<p>Maximizing a monotone submodular set function under a cardinality constraint can be done using extremely simple greedy algorithms (<a href="https://link.springer.com/chapter/10.1007/BFb0006528">Minoux, 1978</a>) with approximation guarantees. Current efforts by the Principal Investigator of the project are devoted to generalizing the results of <span class="citation" data-cites="shamaiah_greedy_2010">Shamaiah, Banerjee, and Vikalo (<a href="#ref-shamaiah_greedy_2010" role="doc-biblioref">2010</a>)</span> to arbitrary noise covariance matrix as well as implementing state-of-the-art submodular function maximization algorithms in the open-source library <code>SubmodularOpt.jl</code>.</p>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -710,6 +746,12 @@ Rowley, C. W. 2005. <span>“Model Reduction for Fluids, Using Balanced Proper O
 <div id="ref-schmid_dynamic_2022" class="csl-entry" role="listitem">
 Schmid, Peter J. 2022. <span>“Dynamic <span>Mode</span> <span>Decomposition</span> and <span>Its</span> <span>Variants</span>.”</span> <em>Annual Review of Fluid Mechanics</em> 54 (1): 225–54. <a href="https://doi.org/10.1146/annurev-fluid-030121-015835">https://doi.org/10.1146/annurev-fluid-030121-015835</a>.
 </div>
+<div id="ref-shamaiah_greedy_2010" class="csl-entry" role="listitem">
+Shamaiah, Manohar, Siddhartha Banerjee, and Haris Vikalo. 2010. <span>“Greedy Sensor Selection: <span>Leveraging</span> Submodularity.”</span> In <em>49th <span>IEEE</span> <span>Conference</span> on <span>Decision</span> and <span>Control</span> (<span>CDC</span>)</em>, 2572–77. Atlanta, GA, USA: IEEE. <a href="https://doi.org/10.1109/CDC.2010.5717225">https://doi.org/10.1109/CDC.2010.5717225</a>.
+</div>
+<div id="ref-summers_submodularity_2016" class="csl-entry" role="listitem">
+Summers, Tyler H., Fabrizio L. Cortesi, and John Lygeros. 2016. <span>“On <span>Submodularity</span> and <span>Controllability</span> in <span>Complex</span> <span>Dynamical</span> <span>Networks</span>.”</span> <em>IEEE Transactions on Control of Network Systems</em> 3 (1): 91–101. <a href="https://doi.org/10.1109/TCNS.2015.2453711">https://doi.org/10.1109/TCNS.2015.2453711</a>.
+</div>
 <div id="ref-van_overschee_n4sid_1993" class="csl-entry" role="listitem">
 Van Overschee, P., and B. de Moor. 1993. <span>“<span>N4SID</span>: <span>Numerical</span> <span>Algorithms</span> for <span>State</span> <span>Space</span> <span>Subspace</span> <span>System</span> <span>Identification</span>.”</span> <em>IFAC Proceedings Volumes</em>, 12th <span>Triennal</span> <span>Wold</span> <span>Congress</span> of the <span>International</span> <span>Federation</span> of <span>Automatic</span> control. <span>Volume</span> 5 <span>Associated</span> <span>Technologies</span> and <span>Recent</span> <span>Developments</span>, <span>Sydney</span>, <span>Australia</span>, 18-23 <span>July</span>, 26 (2, Part 5): 55–58. <a href="https://doi.org/10.1016/S1474-6670(17)48221-8">https://doi.org/10.1016/S1474-6670(17)48221-8</a>.
 </div>
@@ -718,6 +760,9 @@ Verhaegen, M., and P. Dewilde. 1992. <span>“Subspace Model Identification <spa
 </div>
 <div id="ref-willcox_unsteady_2006" class="csl-entry" role="listitem">
 Willcox, K. 2006. <span>“Unsteady Flow Sensing and Estimation via the Gappy Proper Orthogonal Decomposition.”</span> <em>Computers &amp; Fluids</em> 35 (2): 208–26. <a href="https://doi.org/10.1016/j.compfluid.2004.11.006">https://doi.org/10.1016/j.compfluid.2004.11.006</a>.
+</div>
+<div id="ref-zhang_sensor_2017" class="csl-entry" role="listitem">
+Zhang, Haotian, Raid Ayoub, and Shreyas Sundaram. 2017. <span>“Sensor Selection for <span>Kalman</span> Filtering of Linear Dynamical Systems: <span>Complexity</span>, Limitations and Greedy Algorithms.”</span> <em>Automatica</em> 78 (April): 202–10. <a href="https://doi.org/10.1016/j.automatica.2016.12.025">https://doi.org/10.1016/j.automatica.2016.12.025</a>.
 </div>
 </div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
