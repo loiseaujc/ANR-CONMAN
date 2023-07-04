@@ -8,6 +8,8 @@ bibliography: bibliography.bib
 license: "CC BY"
 ---
 
+<img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by.png" width="15%" />
+
 This is the first progress report for the ANR JCJC project **CONMAN**, covering the period from January 1st, 2023 to June 30th, 2023.
 
 ## Identification
@@ -452,7 +454,7 @@ $$
 
 Here, $\mathbf{X}$ and $\mathbf{Y}$ are data matrices, $\mathbf{M} and $\mathbf{W}$ are symmetric positive (semi-) definite matrices and $r$ is the desired rank of the approximation.
 Although non-convex, this rank-constrained problem admits a closed-form solution [@heas_low-rank_2022;@loiseau_data-driven_2020].
-In the statistics community, this problem is also known as the *fundamental equation of component analysis$ [@de_la_torre_least-squares_2012].
+In the statistics community, this problem is also known as the *fundamental equation of component analysis* [@de_la_torre_least-squares_2012].
 
 Many tools classically used in data-driven engineering fall in this class of problem.
 As an example, POD analysis can be recovered from this problem by setting $\mathbf{X} = \mathbf{Y}$ and $\mathbf{P} = \mathbf{Q}$ leading to the celebrated low-rank matrix approximation problem whose solution is given by the truncated singular value decomposition of the data matrix $\mathbf{X}$.
@@ -484,7 +486,74 @@ This package will have a large usage base than the`nekStab` implementation as da
 
 #### Submodular set function maximization
 
+Optimal sensor and actuator selection is an important unsolved problem in control theory.
+Nearly every downstream control decision is affected by the selected sensors and actuators.
+Yet, determining optimal locations is a brute-force search through the combinatorial possibilities.
+Given $m$ available sensors but a budget for only $p$ of them, there are
 
+$$
+\binom{m}{p} = \dfrac{m!}{\left( m - p \right)! \times p!}
+$$
+
+possible combinations.
+No matter the performance index considered, this is a rapidly intractable combinatorial problem.
+Various heuristics have been proposed in the literature for LTI systems, including @chen_h2_2011, @summers_submodularity_2016, @zhang_sensor_2017, @manohar_data-driven_2018, @burns_optimal_2021, or @manohar_optimal_2022 for instance.
+Most of these techniques are however targetting sensor and actuator placement for open-loop systems.
+
+Although we are eventually interested in applications of sensor and actuator placement for closed-loop systems, let us illustrate the optimization methodology developped in this project on a simpler problem.
+For that purpose, consider the following linear inverse problem
+
+$$
+\mathbf{y} = \mathbf{Cx} + \mathbf{v},
+$$
+
+where $\mathbf{x} \in \mathbb{R}^n$ is the state vector of the system, and $\mathbf{C} \in \mathbb{R}^{m \times n}$ is the observation matrix with each of its rows describing a different sensor.
+The vector $\mathbf{y} \in \mathbb{R}^m$ is the measurement vector whose i-th entry corresponds to a scalar observation of the i-th sensor, i.e. $y_i = \mathbf{c}_i^T \mathbf{x} + v_i$.
+These measurements are being contaminated by the sensor noise $\mathbf{v} \sim \mathcal{N}(\mathbf{0}, \mathbf{V})$.
+Our objective is to determine the best subset of sensors to activate as to minimize the estimation error, subject to a constraint on the number of activations.
+Let $\mathbf{z} \in \left\{ 0, 1 \right\}^{m}$ where $z_i$ indicates whether the i-th sensor has been selected ($z_i = 1$) or not ($z_i = 0$).
+The effective measurement equation can be expressed as
+
+$$
+\mathbf{y}_z = \mathbf{S}_z \mathbf{Cx} + \mathbf{S}_z \mathbf{v},
+$$
+
+where $\mathbf{S}_z \in \left\{ 0, 1 \right\}^{\vert z \vert \times m}$ is the selection operator constructed from the binary vector $\mathbf{z}$.
+Adopting a Bayesian point of view, the minimum mean-squared error estimate is given by
+
+$$
+\mathbf{x} = \bar{\mathbf{x}} + \left( \boldsymbol{\Sigma}^{-1} + \mathbf{C}^T \mathbf{S}_z^T \mathbf{V}_z^{-1} \mathbf{S}_z \mathbf{C} \right)^{-1} \mathbf{C}^T \mathbf{S}_z^T \left( \mathbf{y}_z - \mathbf{S}_z \mathbf{C} \bar{\mathbf{x}} \right)
+$$
+
+with $\boldsymbol{\Sigma}$ the state covariance matrix.
+The matrix
+
+$$
+\mathbf{F}_z = \boldsymbol{\Sigma}^{-1} + \mathbf{C}^T \mathbf{S}_z^T \mathbf{V}_z^{-1} \mathbf{S}_z \mathbf{C}
+$$
+
+is the *Fisher information matrix*, and corresponds to the inverse of the estimator's error covariance matrix.
+Our objective is thus to maximize the spectral content of this information matrix to ensure it as well conditionned as possible, thus reducing the estimation error.
+
+Different objective functions can be used.
+These are classically chosen as $f_1(\mathbf{z}) = \mathrm{trace} \left( \mathbf{F}_z \right)$, $f_2(\mathbf{z}) = \log\det \left( \mathbf{F}_z \right)$, or $f_3(\mathbf{z}) = \lambda_{\min}\left( \mathbf{F}_z \right)$, corresponding to different optimal design strategies.
+In either case, we aim to solve the following optimization problem
+
+$$
+\begin{aligned}
+\max_{\mathbf{z} \in \left\{ 0, 1 \right\}^{m}} & \quad f_i(\mathbf{z}) \\
+\mathrm{subjecto~to} & \quad \vert \mathbf{z} \vert = p.
+\end{aligned}
+$$
+
+Despite being a combinatorially intractable problem, one can leverage some properties of the objective functions to design greedy algorithms with approximation guarantees [@shamaiah_greedy_2010].
+In particular, if the sensor noise covariance matrix is diagonal (i.e. uncorrelated noise), the function $f_2(\mathbf{F}_z) = \log\det(\mathbf{F}_z)$ is a *monotone submodular set function*:
+
+- *monotone* -- Adding a new sensor can only improve the quality of our estimate.
+- *submodular* -- As the number of selected sensors increases, the benefit of adding yet another sensor decreases. It is the *diminishing return property*.
+
+Maximizing a monotone submodular set function under a cardinality constraint can be done using extremely simple greedy algorithms ([Minoux, 1978](https://link.springer.com/chapter/10.1007/BFb0006528)) with approximation guarantees.
+Current efforts by the Principal Investigator of the project are devoted to generalizing the results of @shamaiah_greedy_2010 to arbitrary noise covariance matrix as well as implementing state-of-the-art submodular function maximization algorithms in the open-source library `SubmodularOpt.jl`.
 
 ::: {.callout-note appearance="simple"}
 
